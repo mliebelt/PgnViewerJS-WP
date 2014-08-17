@@ -24,7 +24,7 @@ Allows to print a game in a format similar to magazines and books. For that purp
 Allows to edit and view a game. At the end, you may use the PGN button to display the notation,
      that then may be copied again in the WordPress post entry.
      
-### Configuration ###     
+### Configuration ###
 
 This will explain the configuration options that are directly supported ...
 
