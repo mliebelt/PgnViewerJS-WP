@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: PgnViewerJS
-Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
+Plugin URI: https://github.com/mliebelt/PgnViewerJS-WP
 Description: Integrates the PgnViewerJS into Wordpress
 Version: 0.9.0
 Author: Markus Liebelt
-Author URI: http://URI_Of_The_Plugin_Author
+Author URI: https://github.com/mliebelt
 License: Apache License Version 2.0
 */
 
@@ -17,6 +17,7 @@ function pgnv_js_and_css(){
     wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
     wp_enqueue_style('chessboard-css', 'http://mliebelt.bplaced.net/pgnvjs/dist/css/chessboard.css');
     wp_enqueue_style('pgnviewerjs-css', 'http://mliebelt.bplaced.net/pgnvjs/dist/css/pgnvjs.css');
+    wp_enqueue_style('jquery-multiselect-css', 'http://mliebelt.bplaced.net/pgnvjs/dist/css/jquery.multiselect.css');
 }
 
 add_action('wp_enqueue_scripts', 'pgnv_js_and_css');

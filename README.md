@@ -10,6 +10,9 @@ WordPress installation. At the end, it should provide the following interfaces:
 This is the PgnViewer (mostly needed): allows to play through a game (including variations),
      printing the comments, NAGs, ...
      
+### Planed ###
+
+     
      [pgnb]a FEN string[/pgnb]
 
 Just to display a board (only), no moves.
@@ -31,5 +34,4 @@ This will explain the configuration options that are directly supported ...
 ### Reference ###
 
 * [GitHub](https://github.com/mliebelt/PgnViewerJS): Here is the original JavaScript implementation available.
-* [PgnV Demo](http://mliebelt.bplaced.net/pgnvjs/examples2.html): Demonstration web site for the features
-   that are currently inluded in PgnViewerJS
+* [PgnV Demo](http://mliebelt.github.io/PgnViewerJS/docu/examples2.html#1000): Demonstration web site for the features that are currently inluded in PgnViewerJS, and may soon be integrated into the Wordpress plugin in a similar way.
