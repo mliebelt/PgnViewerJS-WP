@@ -13,20 +13,24 @@ License: Apache License Version 2.0
 function pgnv_js_and_css(){
     $loc = get_locale();
     wp_enqueue_script("jquery");
-    wp_enqueue_script('pgnviewerjs', 'http://mliebelt.bplaced.net/pgnvjs/dist/js/pgnviewerjs.js');
+    wp_enqueue_script('pgnviewerjs', 'http://mliebelt.github.io/PgnViewerJS/docu/dist/js/pgnviewerjs.js');
     wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
-    wp_enqueue_style('chessboard-css', 'http://mliebelt.bplaced.net/pgnvjs/dist/css/chessboard.css');
-    wp_enqueue_style('pgnviewerjs-css', 'http://mliebelt.bplaced.net/pgnvjs/dist/css/pgnvjs.css');
-    wp_enqueue_style('jquery-multiselect-css', 'http://mliebelt.bplaced.net/pgnvjs/dist/css/jquery.multiselect.css');
+    wp_enqueue_style('pgnviewerjs-css', 'http://mliebelt.github.io/PgnViewerJS/docu/dist/css/pgnvjs.css');
 }
 
 add_action('wp_enqueue_scripts', 'pgnv_js_and_css');
 
-// [pgnv id=board] 1. e4 e5 2. Nf3 Nc6 3. Bb5 [/pgnv]
+// [pgnv id=board pieceStyle: 'merida', locale: 'fr', orientation: 'black', theme: 'chesscom', boardSize: '200px', size: '500px'] 1. e4 e5 2. Nf3 Nc6 3. Bb5 [/pgnv]
 function pgnviewer($attributes, $content = NULL) {
     extract( shortcode_atts( array(
         'id' => 'demo',
-        'fen' => NULL
+        'locale' => '$loc',
+        'fen' => NULL,
+        'piecestyle' => 'merida',
+        'orientation' => 'white',
+        'theme' => NULL,
+        'boardsize' => NULL,
+        'size' => '400px'
     ), $attributes ) );
     $cleaned = cleanup_pgnv($content);
     if (is_null($fen)) {
@@ -37,21 +41,18 @@ function pgnviewer($attributes, $content = NULL) {
     }
 
     $float = <<<EOD
-<div id="$id" style="width: 400px"></div>
+<div id="$id" style="width: $size"></div>
 EOD;
-    $text = "";
-    $text .= var_dump($attributes);
-    $text .= "ID: $id ";
     $template = <<<EOD
 $float
 
 <script>
-    var pgn = '$cleaned';
-    pgnView('$id', { $pgnpart });
+    pgnView('$id', { $pgnpart, orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', size: '$size', locale: '$locale' });
 </script>
 
 EOD;
-    return $text . $template;
+    // return $text . $template;
+    return $template;
 }
 
 add_shortcode( 'pgnv', 'pgnviewer');
