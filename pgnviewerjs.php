@@ -13,9 +13,9 @@ License: Apache License Version 2.0
 function pgnv_js_and_css(){
     $loc = get_locale();
     wp_enqueue_script("jquery");
-    wp_enqueue_script('pgnviewerjs', 'http://mliebelt.github.io/PgnViewerJS/docu/dist/js/pgnviewerjs.js');
+    wp_enqueue_script('pgnviewerjs', 'http://mliebelt.github.io/PgnViewerJS/dist/js/pgnviewerjs.js');
     wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
-    wp_enqueue_style('pgnviewerjs-css', 'http://mliebelt.github.io/PgnViewerJS/docu/dist/css/pgnvjs.css');
+    wp_enqueue_style('pgnviewerjs-css', 'http://mliebelt.github.io/PgnViewerJS/dist/css/pgnvjs.css');
 }
 
 add_action('wp_enqueue_scripts', 'pgnv_js_and_css');
