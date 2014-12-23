@@ -12,10 +12,10 @@ License: Apache License Version 2.0
 
 function pgnv_js_and_css(){
     $loc = get_locale();
-    wp_enqueue_script("jquery");
-    wp_enqueue_script('pgnviewerjs', 'http://mliebelt.github.io/PgnViewerJS/dist/js/pgnviewerjs.js');
+    //wp_enqueue_script("jquery");
+    wp_enqueue_script('pgnviewerjs', plugins_url('js/pgnvjs.js', __FILE__));
     wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
-    wp_enqueue_style('pgnviewerjs-css', 'http://mliebelt.github.io/PgnViewerJS/dist/css/pgnvjs.css');
+    wp_enqueue_style('pgnviewerjs-css', plugins_url('css/pgnvjs.css', __FILE__));
 }
 
 add_action('wp_enqueue_scripts', 'pgnv_js_and_css');
@@ -24,7 +24,7 @@ add_action('wp_enqueue_scripts', 'pgnv_js_and_css');
 function pgnviewer($attributes, $content = NULL) {
     extract( shortcode_atts( array(
         'id' => 'demo',
-        'locale' => '$loc',
+        'locale' => "$loc",
         'fen' => NULL,
         'piecestyle' => 'merida',
         'orientation' => 'white',
