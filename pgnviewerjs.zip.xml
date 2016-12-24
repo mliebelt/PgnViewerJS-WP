@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="pgnviewerjswp" default="zip">
-
-    <target name="zip" description="Builds the zip file that may then be distributed to WordPress">
-        <zip destfile="../pgnviewerjs.zip" basedir="." excludes=".idea/**, .git/**, *.iml, pgnviewerjs.zip.*"/>
-    </target>
-</project>
