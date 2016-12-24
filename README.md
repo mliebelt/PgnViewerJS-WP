@@ -13,7 +13,12 @@ This is the PgnViewer (mostly needed): allows to play through a game (including 
 ### Planed ###
 
      
-     [pgnb]a FEN string[/pgnb]
+     [pgne]1. e4 ...[/pgne]
+     
+Allows to edit and view a game. At the end, you may use the PGN button to display the notation,
+     that then may be copied again in the WordPress post entry.
+     
+     [pgnb position=<a FEN string>][/pgnb]
 
 Just to display a board (only), no moves.
      
@@ -21,11 +26,6 @@ Just to display a board (only), no moves.
      
 Allows to print a game in a format similar to magazines and books. For that purpose, the notation
      of PGN was expanded by the "D" at the end of a move, that stands for the diagram.
-     
-     [pgne]1. e4 ...[/pgne]
-     
-Allows to edit and view a game. At the end, you may use the PGN button to display the notation,
-     that then may be copied again in the WordPress post entry.
      
 ### Configuration ###
 
