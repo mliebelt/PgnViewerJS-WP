@@ -16,7 +16,8 @@ module.exports = function(grunt) {
                     { src: 'img/**'},
                     { src: 'js/*'},
                     { src: 'locales/*'},
-                    { src: 'pgnviewerjs.php'}
+                    { src: 'pgnviewerjs.php'},
+                    { src: 'readme.txt'}
                 ]
             }
         }
