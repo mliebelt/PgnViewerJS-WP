@@ -22520,5 +22520,5 @@ var pgnPrint = function(boardId, configuration) {
     var base = pgnBase(boardId, configuration);
     base.generateHTML();
 //    var board = base.generateBoard();
-    base.generateMoves(board);
+    base.generateMoves(null);
 };
