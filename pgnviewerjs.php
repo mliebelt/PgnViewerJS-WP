@@ -85,8 +85,8 @@ add_shortcode( 'pgnp', 'pgnprint');
 // * line breaks ==> Spaces
 // * Pattern: ... ==> ..
 function cleanup_pgnv( $content ) {
-    $search = array("...", "&#8230;");
-    $replace = array("..", "..");
+    $search = array("...", "&#8230;", '&#8221;', '&#8220;');
+    $replace = array("..", "..", '"', '"');
     $tmp = str_replace($search, $replace, $content);
     return str_replace (array("\r\n", "\n", "\r", "<br />"), ' ', $tmp);
 }

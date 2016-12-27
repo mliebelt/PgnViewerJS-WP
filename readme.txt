@@ -38,15 +38,31 @@ Allows to print a game in a format similar to magazines and books. For that purp
 1. Activate the plugin through the 'Plugins' screen in WordPress
 
 
+== Upgrade Notice ==
+
+First version, so nothing to adjust.
+
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= What parameters are available? =
 
-An answer to that question.
+The parameters the viewer understands are:
 
-= What about foo bar? =
+* id: necessary if more than one viewer will be contained in one post. Default is 'demo'
+* locale: the locale to use for displaying the moves, default is 'en'
+* fen: the position where the game starts, default is the initial position
+* piecestyle: the pieces to use, default is 'merida'. Availabe are: 'wikipedia', 'alpha', 
+'uscf', 'case', 'condal', 'leipzig', 'chesscom', and 'beyer'.
+* orientation: 'white' or 'black', default is 'white'
+* theme: the theme defines the overall board, color, pieces, ... Current are: green, zeit, chesscom, informator, 
+sportverlag, beyer, falken, blue
+* boardsize: the size of the board, if it should be different to the size of the column.
+* size: the size of the column to print the board, the buttons, the moves, ...
 
-Answer to foo bar dilemma.
+= Where can I find more information about the implementation? =
+
+Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP and the sister repository
+https://github.com/mliebelt/PgnViewerJS (which contains the implementation in Javascript).
 
 == Screenshots ==
 
@@ -58,5 +74,5 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 == Changelog ==
 
-= 0.9.5 =
+= 0.9.4 =
 * First version made public

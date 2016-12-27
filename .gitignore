@@ -39,3 +39,6 @@ node_modules/
 
 # Disable distribution file (just in accidence ...)
 # PgnViewerJS-WP.zip
+
+# Ignore the Subversion meta data
+.svn/
