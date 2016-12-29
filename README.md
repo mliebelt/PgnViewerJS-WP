@@ -10,8 +10,6 @@ WordPress installation. At the end, it should provide the following interfaces:
 This is the PgnViewer (mostly needed): allows to play through a game (including variations),
      printing the comments, NAGs, ...
      
-### Planed ###
-
      
      [pgne]1. e4 ...[/pgne]
      
@@ -26,10 +24,19 @@ Just to display a board (only), no moves.
      
 Allows to print a game in a format similar to magazines and books. For that purpose, the notation
      of PGN was expanded by the "D" at the end of a move, that stands for the diagram.
-     
+
+### Planed ###
+
+* The final goal is to allow some users in wordpress to edit a game and to save it, so others may view it.
+For this purpose, I have to learn and find out a lot:
+  * Is there an API I can use to store the games external to pages?
+  * What is the role model in Wordpress and does it support what I want to do?
+  * 
+
 ### Configuration ###
 
-This will explain the configuration options that are directly supported ...
+This will explain the configuration options that are directly supported ... Details will be contained in the
+father implementation, so only the mapping in Wordpress has to be explained.
 
 ### Reference ###
 
