@@ -16,7 +16,7 @@ Integration of PgnViewerJS into WordPress. This is a small layer around the orig
 [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a
 WordPress installation. At the end, it should provide the following interfaces:
 
-    [pgnv]1. e4 e5 2. ...[/pgnv]
+     [pgnv]1. e4 e5 2. ...[/pgnv]
      
 This is the PgnViewer (mostly needed): allows to play through a game (including variations), printing the comments, NAGs, ...
     
@@ -66,13 +66,17 @@ https://github.com/mliebelt/PgnViewerJS (which contains the implementation in Ja
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Example for use of pgnView (shortcode pgnv).
+2. Example for use of pgnEdit (shortcode pgne).
+3. Example for use of pgnBoard (shortcode pgnb).
+4. Example for use of pgnPrint (shortcode pgnp).
 
 == Changelog ==
+
+= 0.9.5 =
+
+* Current version of PgnViewerJS as published on GitHub.
+* Fixed minor things by adding CSS file for WordPress only.
 
 = 0.9.4 =
 * First version made public

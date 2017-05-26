@@ -42,3 +42,6 @@ PgnViewerJS-WP.zip
 
 # Ignore the Subversion meta data
 .svn/
+
+# Ignore files from VisualStudio Code
+settings.json
