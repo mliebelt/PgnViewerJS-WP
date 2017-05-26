@@ -24,7 +24,7 @@ add_action('wp_enqueue_scripts', 'pgnv_js_and_css');
 // [pgnv id=board pieceStyle=merida locale=fr orientation=black theme=chesscom boardSize=200px size=500px] 1. e4 e5 2. Nf3 Nc6 3. Bb5 [/pgnv]
 function pgnbase($attributes, $content = NULL, $mode) {
     extract( shortcode_atts( array(
-        'id' => 'demo',
+        'id' => NULL,
         'locale' => "en",
         'fen' => NULL,
         'piecestyle' => 'merida',
@@ -39,6 +39,9 @@ function pgnbase($attributes, $content = NULL, $mode) {
     } else {
         $pgn = '[FEN "' . $fen . ']" ' . $cleaned;
         $pgnpart = "pgnString: '$pgn'";
+    }
+    if (is_null($id)) {
+        $id = generateRandomString();
     }
     $text = "Parameters: ";
     $text .= "ID: " . $id;
@@ -90,6 +93,11 @@ function cleanup_pgnv( $content ) {
     $replace = array("..", "..", '"', '"');
     $tmp = str_replace($search, $replace, $content);
     return str_replace (array("\r\n", "\n", "\r", "<br />"), ' ', $tmp);
+}
+
+// Taken from https://stackoverflow.com/questions/4356289/php-random-string-generator
+function generateRandomString($length = 10) {
+    return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
 }
 
 ?>
