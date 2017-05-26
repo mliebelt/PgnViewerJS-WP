@@ -41,7 +41,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
         $pgnpart = "pgnString: '$pgn'";
     }
     if (is_null($id)) {
-        $id = generateRandomString
+        $id = generateRandomString();
     }
     $text = "Parameters: ";
     $text .= "ID: " . $id;
