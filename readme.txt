@@ -12,9 +12,7 @@ Integration of PgnViewerJS into WordPress.
 
 == Description ==
 
-Integration of PgnViewerJS into WordPress. This is a small layer around the original
-[PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a
-WordPress installation. At the end, it should provide the following interfaces:
+Integration of PgnViewerJS into WordPress. This is a small layer around the original [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a WordPress installation. At the end, it should provide the following interfaces:
 
      [pgnv]1. e4 e5 2. ...[/pgnv]
      
@@ -32,6 +30,8 @@ Just to display a board (only), no moves.
      
 Allows to print a game in a format similar to magazines and books. For that purpose, the notation  of PGN was expanded by the "D" at the end of a move, that stands for the diagram.
 
+For a list of available parameters, look into the Frequently Asked Questions.
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
@@ -48,19 +48,22 @@ First version, so nothing to adjust.
 
 The parameters the viewer understands are:
 
-* id: May be set by the user or generated automatically by the system
-* locale: the locale to use for displaying the moves, default is 'en'. Available are: cs, da, de, en, es, et, fi, fr, hu, is, it, nb, nl, pl, pt, ro, sv
-* fen: the position where the game starts, default is the initial position
+* id: May be set by the user or generated automatically by the system.
+* locale: the locale to use for displaying the moves, default is 'en'. Available are: cs, da, de, en, es, et, fi, fr, hu, is, it, nb, nl, pl, pt, ro, sv.
+* fen: the position where the game starts, default is the initial position.
 * piecestyle: the pieces to use, default is 'merida'. Availabe are: 'wikipedia', 'alpha', 'uscf', 'case', 'condal', 'leipzig', 'chesscom', 'maya', 'merida', and 'beyer'.
 * orientation: 'white' or 'black', default is 'white'
 * theme: the theme defines the overall board, color, pieces, ... Current are: green, zeit, chesscom, informator, sportverlag, beyer, falken, blue
 * boardsize: the size of the board, if it should be different to the size of the column.
 * size: the size of the column to print the board, the buttons, the moves, ...
 
+The following code shows how to use some of the parameters in a page:
+
+    [pgnv locale=fr piecestyle=uscf orientation=black theme=zeit size=500]1. e4 e5 2. Nf3 Nc6[/pgnv]
+
 = Where can I find more information about the implementation? =
 
-Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP and the sister repository
-https://github.com/mliebelt/PgnViewerJS (which contains the implementation in Javascript).
+Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP and the sister repository https://github.com/mliebelt/PgnViewerJS (which contains the implementation in Javascript).
 
 == Screenshots ==
 
