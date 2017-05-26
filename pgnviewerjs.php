@@ -4,7 +4,7 @@
 Plugin Name: PgnViewerJS
 Plugin URI: https://github.com/mliebelt/PgnViewerJS-WP
 Description: Integrates the PgnViewerJS into Wordpress
-Version: 0.9.4
+Version: 0.9.5
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: Apache License Version 2.0
@@ -16,6 +16,7 @@ function pgnv_js_and_css(){
     wp_enqueue_script('pgnviewerjs', plugins_url('js/pgnvjs.js', __FILE__));
     //wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
     wp_enqueue_style('pgnviewerjs-css', plugins_url('css/pgnvjs.css', __FILE__));
+    wp_enqueue_style('wp-pgnv-css', plugins_url('css/wp-pgnv.css', __FILE__));
 }
 
 add_action('wp_enqueue_scripts', 'pgnv_js_and_css');
