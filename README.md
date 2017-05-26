@@ -45,7 +45,6 @@ If everything works well, you will have now a page with a rendered chessboard in
 For this purpose, I have to learn and find out a lot:
   * Is there an API I can use to store the games external to pages?
   * What is the role model in Wordpress and does it support what I want to do?
-  * 
 
 ### Configuration ###
 
@@ -55,4 +54,4 @@ father implementation, so only the mapping in Wordpress has to be explained.
 ### Reference ###
 
 * [GitHub](https://github.com/mliebelt/PgnViewerJS): Here is the original JavaScript implementation available.
-* [PgnV Demo](http://mliebelt.github.io/PgnViewerJS/docu/examples2.html#1000): Demonstration web site for the features that are currently inluded in PgnViewerJS, and may soon be integrated into the Wordpress plugin in a similar way.
+* [PgnV Demo](http://mliebelt.github.io/PgnViewerJS/docu/examples.html#1000): Demonstration web site for the features that are currently inluded in PgnViewerJS, and may soon be integrated into the Wordpress plugin in a similar way.

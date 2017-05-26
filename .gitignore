@@ -38,7 +38,7 @@ com_crashlytics_export_strings.xml
 node_modules/
 
 # Disable distribution file (just in accidence ...)
-# PgnViewerJS-WP.zip
+PgnViewerJS-WP.zip
 
 # Ignore the Subversion meta data
 .svn/
