@@ -25,6 +25,20 @@ Just to display a board (only), no moves.
 Allows to print a game in a format similar to magazines and books. For that purpose, the notation
      of PGN was expanded by the "D" at the end of a move, that stands for the diagram.
 
+### Build ###
+
+The build is done with Grunt, so the `package.json` file helps how to install the necessary tools. After installation, do the following steps:
+
+* Go into the root directory (with node.js, npm and Grunt installed).
+* Call there `grunt` without any arguments.
+* This will build the distribution currently named `PgnViewerJS-WP.zip`.
+* Go to your wordpress website (as administrator), and upload the plugin.
+* Activate the plugin in Wordpress.
+* Build an example page with the following in it: `[pgne]1. e4[/pgne]`
+* Save the page, and open it in wordpress.
+
+If everything works well, you will have now a page with a rendered chessboard in it, which is in edit mode, so you may now add moves that are shown in the section below. Read the documentation of [PgnViewerJS](http://mliebelt.github.io/PgnViewerJS/docu/index.html) what to do with the tool then.
+
 ### Planed ###
 
 * The final goal is to allow some users in wordpress to edit a game and to save it, so others may view it.
