@@ -30,7 +30,8 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'orientation' => 'white',
         'theme' => NULL,
         'boardsize' => NULL,
-        'size' => '400px'
+        'size' => '400px',
+        'scrollbar' => false
     ), $attributes ) );
     $cleaned = cleanup_pgnv($content);
     if (is_null($fen)) {
@@ -51,7 +52,7 @@ EOD;
 $float
 
 <script>
-    $mode('$id', { $pgnpart, orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', size: '$size', locale: '$locale' });
+    $mode('$id', { $pgnpart, orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', size: '$size', locale: '$locale', scrollbar: '$scrollbar' });
 </script>
 
 EOD;
