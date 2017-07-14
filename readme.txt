@@ -16,7 +16,7 @@ Integration of PgnViewerJS into WordPress. This is a small layer around the orig
 [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a
 WordPress installation. At the end, it should provide the following interfaces:
 
-    [pgnv]1. e4 e5 2. ...[/pgnv]
+     [pgnv]1. e4 e5 2. ...[/pgnv]
      
 This is the PgnViewer (mostly needed): allows to play through a game (including variations), printing the comments, NAGs, ...
     
@@ -48,14 +48,12 @@ First version, so nothing to adjust.
 
 The parameters the viewer understands are:
 
-* id: necessary if more than one viewer will be contained in one post. Default is 'demo'
-* locale: the locale to use for displaying the moves, default is 'en'
+* id: May be set by the user or generated automatically by the system
+* locale: the locale to use for displaying the moves, default is 'en'. Available are: cs, da, de, en, es, et, fi, fr, hu, is, it, nb, nl, pl, pt, ro, sv
 * fen: the position where the game starts, default is the initial position
-* piecestyle: the pieces to use, default is 'merida'. Availabe are: 'wikipedia', 'alpha', 
-'uscf', 'case', 'condal', 'leipzig', 'chesscom', and 'beyer'.
+* piecestyle: the pieces to use, default is 'merida'. Availabe are: 'wikipedia', 'alpha', 'uscf', 'case', 'condal', 'leipzig', 'chesscom', 'maya', 'merida', and 'beyer'.
 * orientation: 'white' or 'black', default is 'white'
-* theme: the theme defines the overall board, color, pieces, ... Current are: green, zeit, chesscom, informator, 
-sportverlag, beyer, falken, blue
+* theme: the theme defines the overall board, color, pieces, ... Current are: green, zeit, chesscom, informator, sportverlag, beyer, falken, blue
 * boardsize: the size of the board, if it should be different to the size of the column.
 * size: the size of the column to print the board, the buttons, the moves, ...
 
@@ -66,13 +64,19 @@ https://github.com/mliebelt/PgnViewerJS (which contains the implementation in Ja
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Example for use of pgnView (shortcode pgnv).
+2. Example for use of pgnEdit (shortcode pgne).
+3. Example for use of pgnBoard (shortcode pgnb).
+4. Example for use of pgnPrint (shortcode pgnp).
 
 == Changelog ==
 
+= 0.9.5 =
+
+* Current version of PgnViewerJS as published on GitHub.
+* Fixed minor things by adding CSS file for WordPress only.
+* Added  generation of ID if it is missing
+
 = 0.9.4 =
+
 * First version made public
