@@ -27,6 +27,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'id' => NULL,
         'locale' => "en",
         'fen' => NULL,
+        'position' => NULL,
         'piecestyle' => 'merida',
         'orientation' => 'white',
         'theme' => NULL,
@@ -35,19 +36,24 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'scrollbar' => false
     ), $attributes ) );
     $cleaned = cleanup_pgnv($content);
-    if (is_null($fen)) {
+//    if (is_null($fen)) {
         $pgnpart = "pgn: '$cleaned'";
-    } else {
-        $pgn = '[FEN "' . $fen . ']" ' . $cleaned;
-        $pgnpart = "pgnString: '$pgn'";
-    }
+//    } else {
+//        $pgn = '[FEN "' . $fen . '"] ' . $cleaned;
+//        $pgnpart = "pgnString: '$pgn'";
+//    }
     if (is_null($id)) {
         $id = generateRandomString();
     }
+
+    if (is_null($fen)) {
+        $fen = $position;
+    }
+
     $text = "Parameters: ";
     $text .= "ID: " . $id;
     $text .= " locale: " . $locale . " fen: " . $fen . " piecestyle: " . $piecestyle . " orientation: " . $orientation . " theme: " . $theme;
-    $text .= " boardsize: " . $boardsize . " size: " . $size;
+    $text .= " boardsize: " . $boardsize . " size: " . $size . " position: " . $position;
 
     $float = <<<EOD
 <div id="$id" style="width: $size"></div>
@@ -55,12 +61,13 @@ EOD;
     $template = <<<EOD
 $float
 
+
 <script>
-    $mode('$id', { $pgnpart, orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', size: '$size', locale: '$locale', scrollbar: '$scrollbar' });
+    $mode('$id', { $pgnpart, position: '$fen', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', size: '$size', locale: '$locale', scrollbar: '$scrollbar' });
 </script>
 
 EOD;
-   //return $text . $template;
+   //return $text . $template;  // Uncomment this  line to see parameters displayed
    return $template;
 }
 

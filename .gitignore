@@ -45,3 +45,7 @@ PgnViewerJS-WP.zip
 
 # Ignore files from VisualStudio Code
 settings.json
+
+# Ignore from IntelliJ IDEA
+pgnviewerjs-wp.properties
+pgnviewerjs-wp.xml
