@@ -12,6 +12,9 @@ Here are the things that remain todo. If solved, move to the solved section.
 * The layout of the board needs too much place. I should find ways for displaying board, moves and navigation elements
   so that not such much place is wasted.
 * Find alternative ways to scale, so that depending on the wordpress theme, the layout of the board and moves may be different.
+* Parameters
+  * pgnFile: Currently not possible, may be useful later.
+  * pgn: Is the part of the section in between `[pgnv]` and `[/pgnv]`.
 * Bugs / Problems
   * Empty move section leads to a fault (should be a bug in pgnView)
   * Position parameter was ignored (now possible with fen, not position)
