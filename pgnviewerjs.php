@@ -26,7 +26,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $args = shortcode_atts( array(
         'id' => NULL,
         'locale' => $loc,
-        'fen' => 'start',
+        'fen' => NULL,
         'position' => 'start',
         'piecestyle' => 'merida',
         'orientation' => 'white',
@@ -85,7 +85,7 @@ $float
 </script>
 
 EOD;
-   //return $text . $template;  // Uncomment this  line to see parameters displayed
+   return $text . $template;  // Uncomment this  line to see parameters displayed
    return $template;
 }
 

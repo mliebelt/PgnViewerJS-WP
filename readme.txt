@@ -22,7 +22,7 @@ This is the PgnViewer (mostly needed): allows to play through a game (including 
      
 Allows to edit and view a game. At the end, you may use the PGN button to display the notation,  that then may be copied again in the WordPress post entry.
      
-     [pgnb position=<a FEN string>][/pgnb]
+     [pgnb fen=<a FEN string>][/pgnb]
 
 Just to display a board (only), no moves.
      
@@ -40,7 +40,10 @@ For a list of available parameters, look into the Frequently Asked Questions.
 
 == Upgrade Notice ==
 
-First version, so nothing to adjust.
+=== 0.9.7 ===
+
+* Removed parameter position, you have to use fen instead.
+* Added some parameters that were now available from PgnViewerJS.
 
 == Frequently Asked Questions ==
 
@@ -56,6 +59,10 @@ The parameters the viewer understands are:
 * theme: the theme defines the overall board, color, pieces, ... Current are: green, zeit, chesscom, informator, sportverlag, beyer, falken, blue
 * boardsize: the size of the board, if it should be different to the size of the column.
 * size: the size of the column to print the board, the buttons, the moves, ...
+* moveswidth: used to size the width of the moves section. Needed for layout == left | right
+* movesheight: used to size the height of the moves section. Needed for layout == left | right
+* layout: top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
+
 
 The following code shows how to use some of the parameters in a page:
 
