@@ -4,14 +4,14 @@
 Plugin Name: PgnViewerJS
 Plugin URI: https://github.com/mliebelt/PgnViewerJS-WP
 Description: Integrates the PgnViewerJS into Wordpress
-Version: 0.9.5
+Version: 0.9.7
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: Apache License Version 2.0
 */
 
 function pgnv_js_and_css(){
-    wp_enqueue_script("jquery");
+    //wp_enqueue_script("jquery");  // no need of jQuery any more
     wp_enqueue_script('pgnviewerjs', plugins_url('js/pgnvjs.js', __FILE__));
     //wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
     wp_enqueue_style('pgnviewerjs-css', plugins_url('css/pgnvjs.css', __FILE__));
@@ -26,11 +26,11 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $args = shortcode_atts( array(
         'id' => NULL,
         'locale' => $loc,
-        'fen' => NULL,
-        'position' => NULL,
+        'fen' => 'start',
+        'position' => 'start',
         'piecestyle' => 'merida',
         'orientation' => 'white',
-        'theme' => NULL,
+        'theme' => 'blue',
         'boardsize' => NULL,
         'size' => '400px',
         'show_notation' => 1,
@@ -71,7 +71,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $text = "Parameters: ";
     $text .= "ID: " . $id;
     $text .= " loc: " . $loc . " locale: " . $locale . " fen: " . $fen . " piecestyle: " . $piecestyle . " orientation: " . $orientation . " theme: " . $theme;
-    $text .= " boardsize: " . $boardsize . " size: " . $size . " position: " . $position . " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
+    $text .= " boardsize: " . $boardsize . " width: " . $size . " position: " . $position . " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
 
     $float = <<<EOD
 <div id="$id" style="width: $size"></div>
@@ -81,7 +81,7 @@ $float
 
 
 <script>
-    $mode('$id', { pgn: '$cleaned', position: '$fen', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', size: '$size', locale: '$locale', showNotation: $showNotation, layout: '$layout', movesHeight: '$movesheight'});
+    $mode('$id', { pgn: '$cleaned', position: '$fen', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', width: '$size', locale: '$locale', showNotation: $showNotation, layout: '$layout', movesHeight: '$movesheight'});
 </script>
 
 EOD;

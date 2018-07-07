@@ -11,11 +11,11 @@ module.exports = function(grunt) {
                     archive: 'PgnViewerJS-WP.zip'
                 },
                 files: [
-                    { src: 'css/*' },
-                    { src: 'fonts/*'},
+                    { src: 'css/**' },
+                    { src: 'fonts/**'},
                     { src: 'img/**'},
-                    { src: 'js/*'},
-                    { src: 'locales/*'},
+                    { src: 'js/**'},
+                    { src: 'locales/**'},
                     { src: 'pgnviewerjs.php'},
                     { src: 'readme.txt'}
                 ]

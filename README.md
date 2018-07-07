@@ -16,7 +16,7 @@ This is the PgnViewer (mostly needed): allows to play through a game (including 
 Allows to edit and view a game. At the end, you may use the PGN button to display the notation,
      that then may be copied again in the WordPress post entry.
      
-     [pgnb position=<a FEN string>][/pgnb]
+     [pgnb fen=<a FEN string>][/pgnb]
 
 Just to display a board (only), no moves.
      
