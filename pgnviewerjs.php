@@ -75,15 +75,15 @@ function pgnbase($attributes, $content = NULL, $mode) {
         $id = generateRandomString();
     }
 
-    if (is_null($fen)) {
-        $fen = $position;
+    if (!empty($fen)) {
+        $position = $fen;
     }
     //$scrollable = $scrollable ? 'true' : 'false';
     $showNotation = $showNotation ? 'true' : 'false';
 
     $text = "Parameters: ";
     $text .= "ID: " . $id;
-    $text .= " loc: " . $loc . " locale: " . $locale . " fen: " . $fen . " piecestyle: " . $piecestyle . " orientation: " . $orientation . " theme: " . $theme;
+    $text .= " loc: " . $loc . " locale: " . $locale . " piecestyle: " . $piecestyle . " orientation: " . $orientation . " theme: " . $theme;
     $text .= " boardsize: " . $boardsize . " width: " . $size . " position: " . $position . " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
     $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner . " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
 
