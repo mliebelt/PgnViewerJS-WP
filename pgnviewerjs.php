@@ -26,6 +26,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $args = shortcode_atts( array(
         'id' => NULL,
         'locale' => $loc,
+        'fen' => NULL,
         'position' => 'start',
         'piecestyle' => 'merida',
         'orientation' => 'white',
@@ -45,6 +46,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     ), $attributes, 'shortcodeWPSE' );
     $id = $args['id'];
     $locale = $args['locale'];
+    $fen = $args['fen'];
     $position = $args['position'];
     $piecestyle = $args['piecestyle'];
     $orientation = $args['orientation'];
@@ -73,6 +75,9 @@ function pgnbase($attributes, $content = NULL, $mode) {
         $id = generateRandomString();
     }
 
+    if (is_null($fen)) {
+        $fen = $position;
+    }
     //$scrollable = $scrollable ? 'true' : 'false';
     $showNotation = $showNotation ? 'true' : 'false';
 
