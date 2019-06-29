@@ -4,4 +4,5 @@
  */
  .moves .move a {
      box-shadow: none;
+     color: black;
  }

@@ -26,7 +26,6 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $args = shortcode_atts( array(
         'id' => NULL,
         'locale' => $loc,
-        'fen' => NULL,
         'position' => 'start',
         'piecestyle' => 'merida',
         'orientation' => 'white',
@@ -35,11 +34,17 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'size' => '400px',
         'show_notation' => 1,
         'layout' => NULL,
-        'movesheight' => NULL
+        'movesheight' => NULL,
+        'colormarker' => NULL,
+        'showresult' => false,
+        'coordsinner' => true,
+        'coordsfactor' => 1,
+        'startplay' => NULL,
+        'headers' => true
+
     ), $attributes, 'shortcodeWPSE' );
     $id = $args['id'];
     $locale = $args['locale'];
-    $fen = $args['fen'];
     $position = $args['position'];
     $piecestyle = $args['piecestyle'];
     $orientation = $args['orientation'];
@@ -50,6 +55,12 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $showNotation = filter_var( $args['show_notation'], FILTER_VALIDATE_BOOLEAN );
     $layout = $args['layout'];
     $movesheight = $args['movesheight'];
+    $colormarker = $args['colormarker'];
+    $showresult = $args['showresult'];
+    $coordsinner = $args['coordsinner'];
+    $coordsfactor = $args['coordsfactor'];
+    $startplay = $args['startplay'];
+    $headers = $args['headers'];
 
     $cleaned = cleanup_pgnv($content);
 //    if (is_null($fen)) {
@@ -62,9 +73,6 @@ function pgnbase($attributes, $content = NULL, $mode) {
         $id = generateRandomString();
     }
 
-    if (is_null($fen)) {
-        $fen = $position;
-    }
     //$scrollable = $scrollable ? 'true' : 'false';
     $showNotation = $showNotation ? 'true' : 'false';
 
@@ -72,6 +80,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $text .= "ID: " . $id;
     $text .= " loc: " . $loc . " locale: " . $locale . " fen: " . $fen . " piecestyle: " . $piecestyle . " orientation: " . $orientation . " theme: " . $theme;
     $text .= " boardsize: " . $boardsize . " width: " . $size . " position: " . $position . " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
+    $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner . " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
 
     $float = <<<EOD
 <div id="$id" style="width: $size"></div>
@@ -81,11 +90,11 @@ $float
 
 
 <script>
-    $mode('$id', { pgn: '$cleaned', position: '$fen', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', width: '$size', locale: '$locale', showNotation: $showNotation, layout: '$layout', movesHeight: '$movesheight'});
+    $mode('$id', { pgn: '$cleaned', position: '$position', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', width: '$size', locale: '$locale', showNotation: $showNotation, layout: '$layout', movesHeight: '$movesheight', colorMarker: '$colormarker', showResult: '$showresult', coordsInner: '$coordsinner', coordsFactor: '$coordsfactor', startPlay: '$startplay', headers: '$headers'});
 </script>
 
 EOD;
-   return $text . $template;  // Uncomment this  line to see parameters displayed
+   //return $text . $template;  // Uncomment this  line to see parameters displayed
    return $template;
 }
 
