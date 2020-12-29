@@ -6,3 +6,7 @@
      box-shadow: none;
      color: black;
  }
+
+.moves .move .comment {
+    padding: 0;
+}
