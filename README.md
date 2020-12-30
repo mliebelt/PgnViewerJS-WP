@@ -1,9 +1,7 @@
 PgnViewerJS-WP
 ==============
 
-Integration of PgnViewerJS into WordPress. This is a small layer around the original
-[PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a
-WordPress installation. The plugin should provide the following interfaces:
+Integration of PgnViewerJS into WordPress. This is a small layer around the original [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a WordPress installation. The plugin should provide the following interfaces:
 
 #### Basic View ####
 
@@ -49,18 +47,33 @@ If everything works well, you will have now a page with a rendered chessboard in
 
 ### Planned ###
 
-* The final goal is to allow some users in wordpress to edit a game and to save it, so others may view it.
-For this purpose, I have to learn and find out a lot:
-  * Is there an API I can use to store the games external to pages?
-  * What is the role model in Wordpress and does it support what I want to do?
+* Update the implementation to use the new box model. At the moment, users have to include classic boxes to have the chess games visualized.
+* Allow to have a default configuration, so that has not to be repeated all the time on each page.
 
 ### Configuration ###
 
-This will explain the configuration options that are directly supported. Details will be contained in the
-father implementation, so only the mapping in WordPress has to be explained.
+This will explain the configuration options that are directly supported. Details will be contained in the father implementation, so only the mapping in WordPress has to be explained. Here is a list of the relevant parameters:
+
+* `position`: Gives the FEN string of the start position of the game. Default is the inital position.
+* `orientation`: values are `white` (default) or `black`.
+* `layout`: values are `top` (default, board at the top, moves at the bottom) or `left` (board at the left, moves at the right).
+* `size`: the width of the column including everything, like `750px`.
+* `boardsize`: the width of the board alone, like `400px`.
+* `locale`: the locale to use for tooltips and the move SAN notation. Values are: `en`, `de`, `fr`, `es` and many more.
+* `piecestyle`: values are `merida` (default), `wikipedia`, `alpha`, `uscf`, `case`, `condal`, `maya`, `leipzig`, `beyer` and `chesscom`.
+* `theme`: values are `zeit` (default), `green`, `chesscom`, `informator`, `sportverlag`, `beyer`, `falken`, `blue`.
+
+For other configuration parameters, see the [online documentation of the configuration of the original viewer](https://mliebelt.github.io/PgnViewerJS/docu.html).
+
+A complete example looks like:
+
+    [pgnv position="r1bq1rk1/1p2nppp/1bp2n2/4p3/P1B1P3/B1P2N2/3N1PPP/R2QK2R b KQ - 3 13" 
+    orientation=black layout=left size=750px boardsize=400px locale=de ] 
+    13... Bxf2+!? 14. Kxf2 Ng4+ 15. Kg1? (15. Ke2 Qb6 16. Qg1) Qb6+! 16. Nd4 exd4 
+    17. Rb1 Qa7 18. Qf3 d3+ 19. Kf1 Ne3+ 20. Ke1 Bg4 21. Qg3 Nc2+ 22. Kf1 Be2# [/pgnv]
 
 ### Reference ###
 
 * [GitHub](https://github.com/mliebelt/PgnViewerJS): Here is the original JavaScript implementation available.
-* [PgnV Demo](http://mliebelt.github.io/PgnViewerJS/docu/examples.html#1000): Demonstration web site for the features that are currently inluded in PgnViewerJS, and may soon be integrated into the Wordpress plugin in a similar way.
+* [PgnV Demo](https://mliebelt.github.io/PgnViewerJS/examples.html#1000): Demonstration web site for the features that are currently inluded in PgnViewerJS, and may soon be integrated into the Wordpress plugin in a similar way.
 * [Grunt](https://gruntjs.com/getting-started): Grunt documentation

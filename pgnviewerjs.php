@@ -4,7 +4,7 @@
 Plugin Name: PgnViewerJS
 Plugin URI: https://github.com/mliebelt/PgnViewerJS-WP
 Description: Integrates the PgnViewerJS into Wordpress
-Version: 0.9.7
+Version: 1.1.0
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: Apache License Version 2.0
@@ -12,9 +12,10 @@ License: Apache License Version 2.0
 
 function pgnv_js_and_css(){
     //wp_enqueue_script("jquery");  // no need of jQuery any more
-    wp_enqueue_script('pgnviewerjs', plugins_url('js/pgnvjs.js', __FILE__));
+    wp_enqueue_script('pgnviewerjs-fix', plugins_url('js/fixassets.js', __FILE__));
+    wp_enqueue_script('pgnviewerjs', plugins_url('js/pgnv.js', __FILE__));
     //wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
-    wp_enqueue_style('pgnviewerjs-css', plugins_url('css/pgnvjs.css', __FILE__));
+    wp_enqueue_style('pgnviewerjs-css', plugins_url('css/wp-pgnv.css', __FILE__));
     wp_enqueue_style('wp-pgnv-css', plugins_url('css/wp-pgnv.css', __FILE__));
 }
 
@@ -30,9 +31,9 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'position' => 'start',
         'piecestyle' => 'merida',
         'orientation' => 'white',
-        'theme' => 'blue',
+        'theme' => 'zeit',
         'boardsize' => NULL,
-        'size' => '400px',
+        'size' => NULL,
         'show_notation' => 1,
         'layout' => NULL,
         'movesheight' => NULL,
@@ -65,12 +66,8 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $headers = $args['headers'];
 
     $cleaned = cleanup_pgnv($content);
-//    if (is_null($fen)) {
-        $pgnpart = "pgn: '$cleaned'";
-//    } else {
-//        $pgn = '[FEN "' . $fen . '"] ' . $cleaned;
-//        $pgnpart = "pgnString: '$pgn'";
-//    }
+    error_log("PGN:'" . $cleaned . "'", 0);
+
     if (is_null($id)) {
         $id = generateRandomString();
     }
@@ -88,14 +85,14 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner . " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
 
     $float = <<<EOD
-<div id="$id" style="width: $size"></div>
+<div id="$id"></div>
 EOD;
     $template = <<<EOD
 $float
 
 
 <script>
-    $mode('$id', { pgn: '$cleaned', position: '$position', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', width: '$size', locale: '$locale', showNotation: $showNotation, layout: '$layout', movesHeight: '$movesheight', colorMarker: '$colormarker', showResult: '$showresult', coordsInner: '$coordsinner', coordsFactor: '$coordsfactor', startPlay: '$startplay', headers: '$headers'});
+    PGNV.$mode('$id', { pgn: '$cleaned', position: '$position', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', width: '$size', locale: '$locale', showNotation: $showNotation, layout: '$layout', movesHeight: '$movesheight', colorMarker: '$colormarker', showResult: '$showresult', coordsInner: '$coordsinner', coordsFactor: '$coordsfactor', startPlay: '$startplay', headers: '$headers'});
 </script>
 
 EOD;
@@ -128,11 +125,14 @@ add_shortcode( 'pgnp', 'pgnprint');
 // Cleanup the content, so it will not have any errors. Known are
 // * line breaks ==> Spaces
 // * Pattern: ... ==> ..
-function cleanup_pgnv( $content ) {
+function cleanup_pgnv( $string ) {
     $search = array("...", "&#8230;", '&#8221;', '&#8220;', '&#8222;');
     $replace = array("..", "..", '"', '"', '"');
-    $tmp = str_replace($search, $replace, $content);
-    return str_replace (array("\r\n", "\n", "\r", "<br />"), ' ', $tmp);
+    $tmp = str_replace($search, $replace, $string);
+    $tmp = str_replace (array("\r\n", "\n", "\r", "<br />", "<br>", "<p>", "</p>", "&nbsp;"), ' ', $tmp);
+    $tmp = trim($tmp," \t\n\r");
+    $tmp = preg_replace('~\xc2\xa0~', ' ', $tmp);
+    return preg_replace('/\s+/', ' ', $tmp);
 }
 
 // Taken from https://stackoverflow.com/questions/4356289/php-random-string-generator
