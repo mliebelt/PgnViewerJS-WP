@@ -3,12 +3,12 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        clean: ['PgnViewerJS-WP.zip'],
+        clean: ['pgnviewerjs-wp.zip'],
         
         compress: {
             main: {
                 options: {
-                    archive: 'PgnViewerJS-WP.zip'
+                    archive: 'pgnviewerjs-wp.zip'
                 },
                 files: [
                     { src: 'css/**' },
