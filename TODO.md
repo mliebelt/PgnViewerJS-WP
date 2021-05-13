@@ -32,3 +32,4 @@ Here are the things that remain todo. If solved, move to the solved section.
 
 * Bugs / Problems
   * The images for FontAwesome are not displayed. CSS seems to be correct. ==> Had to add directory fonts from the dist-directory.
+* Distribute everything of PgnViewerJS in one file, so directory structure is not needed any more.  

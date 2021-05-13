@@ -3,8 +3,8 @@ Contributors: mliebelt
 Donate link: 
 Tags: chess, pgn
 Requires at least: 4.6
-Tested up to: 5.6
-Stable tag: 1.1.0
+Tested up to: 5.7
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,11 @@ For a list of available parameters, look into the Frequently Asked Questions.
 
 
 == Upgrade Notice ==
+
+= 1.1.2  =
+
+* Upgrade the implementation to the latest version of PgnViewerJS 1.5.3 that fixes the Fontawesome problem on theme 2021.
+* Fixed some of the whitespace bugs.
 
 = 1.1.0  =
 

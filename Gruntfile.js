@@ -17,6 +17,14 @@ module.exports = function(grunt) {
                     { src: 'readme.txt'}
                 ]
             }
+        },
+        copy: {
+            main: {
+                expand: true,
+                cwd: 'node_modules/@mliebelt/pgn-viewer/lib',
+                src: '**',
+                dest: 'js/',
+            }
         }
 
     });
@@ -24,8 +32,9 @@ module.exports = function(grunt) {
     // Load the necessary tasks
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Default task.
-    grunt.registerTask('default', ['clean', 'compress:main']);
+    grunt.registerTask('default', ['clean', 'copy', 'compress:main']);
 
 };

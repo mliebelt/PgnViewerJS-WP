@@ -4,17 +4,14 @@
 Plugin Name: PgnViewerJS
 Plugin URI: https://github.com/mliebelt/PgnViewerJS-WP
 Description: Integrates the PgnViewerJS into Wordpress
-Version: 1.1.0
+Version: 1.1.2
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: Apache License Version 2.0
 */
 
 function pgnv_js_and_css(){
-    //wp_enqueue_script("jquery");  // no need of jQuery any more
-    wp_enqueue_script('pgnviewerjs-fix', plugins_url('js/fixassets.js', __FILE__));
     wp_enqueue_script('pgnviewerjs', plugins_url('js/pgnv.js', __FILE__));
-    //wp_enqueue_style('jqueryui-css', 'http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css');
     wp_enqueue_style('pgnviewerjs-css', plugins_url('css/wp-pgnv.css', __FILE__));
     wp_enqueue_style('wp-pgnv-css', plugins_url('css/wp-pgnv.css', __FILE__));
 }
@@ -80,9 +77,11 @@ function pgnbase($attributes, $content = NULL, $mode) {
 
     $text = "Parameters: ";
     $text .= "ID: " . $id;
-    $text .= " loc: " . $loc . " locale: " . $locale . " piecestyle: " . $piecestyle . " orientation: " . $orientation . " theme: " . $theme;
-    $text .= " boardsize: " . $boardsize . " width: " . $size . " position: " . $position . " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
-    $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner . " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
+    $text .= " loc: " . $loc . " locale: " . $locale . " piecestyle: " . $piecestyle . " orientation: " . $orientation;
+    $text .= " theme: " . $theme . " boardsize: " . $boardsize . " width: " . $size . " position: " . $position ;
+    $text .= " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
+    $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner;
+    $text .=  " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
 
     $float = <<<EOD
 <div id="$id"></div>
