@@ -77,11 +77,23 @@ function pgnbase($attributes, $content = NULL, $mode) {
 
     $text = "Parameters: ";
     $text .= "ID: " . $id;
-    $text .= " loc: " . $loc . " locale: " . $locale . " piecestyle: " . $piecestyle . " orientation: " . $orientation;
+    $text .= " locale: " . $locale . " piecestyle: " . $piecestyle . " orientation: " . $orientation;
     $text .= " theme: " . $theme . " boardsize: " . $boardsize . " width: " . $size . " position: " . $position ;
     $text .= " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
     $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner;
     $text .=  " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
+
+    $config = array(
+        "locale"  => $locale, "pieceStyle" => $piecestyle, "orientation" => $orientation, "theme" => $theme,
+        "boardSize" => $boardsize, "width" => $size, "position" => $position, "showNotation" => $showNotation,
+        "layout" => $layout, "movesHeight" => $movesheight, "colorMarker" => $colormarker, "showResult" => $showresult,
+        "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers
+    );
+    $config2 = array_filter($config);
+    $config_string = "";
+    foreach ($config2 as $key => $value) {
+        $config_string .= ", " . $key . ": '" . $value . "'";
+    }
 
     $float = <<<EOD
 <div id="$id"></div>
@@ -91,11 +103,11 @@ $float
 
 
 <script>
-    PGNV.$mode('$id', { pgn: '$cleaned', position: '$position', orientation: '$orientation', pieceStyle: '$piecestyle', theme: '$theme', boardSize: '$boardsize', width: '$size', locale: '$locale', showNotation: $showNotation, layout: '$layout', movesHeight: '$movesheight', colorMarker: '$colormarker', showResult: '$showresult', coordsInner: '$coordsinner', coordsFactor: '$coordsfactor', startPlay: '$startplay', headers: '$headers'});
+    PGNV.$mode('$id', { pgn: '$cleaned' $config_string});
 </script>
 
 EOD;
-   //return $text . $template;  // Uncomment this  line to see parameters displayed
+//   return $text . print_r($config2) . $template;  // Uncomment this  line to see parameters displayed
    return $template;
 }
 
