@@ -43,7 +43,8 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'notation' => NULL,
         'notationlayout' => NULL,
         'showfen' => false,
-        'coordsfontsize' => NULL
+        'coordsfontsize' => NULL,
+        'timertime' => NULL
 
     ), $attributes, 'shortcodeWPSE' );
     $id = $args['id'];
@@ -68,6 +69,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $notationlayout = $args['notationlayout'];
     $showfen = $args['showfen'];
     $coordsfontsize = $args['coordsfontsize'];
+    $timertime = $args['timertime'];
 
     $cleaned = cleanup_pgnv($content);
     error_log("PGN:'" . $cleaned . "'", 0);
@@ -89,7 +91,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner;
     $text .= " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
     $text .= " showresult: " . $showresult . " notation: " . $notation . " notationLayout: " . $notationlayout;
-    $text .= " showfen: " . $showfen . " coordsfontsize: " . $coordsfontsize;
+    $text .= " showfen: " . $showfen . " coordsfontsize: " . $coordsfontsize . " timertime: " . $timertime;
 
     $config2 = array_filter(array(
         "locale"  => $locale, "pieceStyle" => $piecestyle, "orientation" => $orientation, "theme" => $theme,
@@ -97,7 +99,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
         "layout" => $layout, "movesHeight" => $movesheight, "colorMarker" => $colormarker, "showResult" => $showresult,
         "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers,
         "showResult" => $showresult, "notation" => $notation, "notationLayout" => $notationlayout, "showFen" => $showfen,
-        "coordsFontSize" => $coordsfontsize
+        "coordsFontSize" => $coordsfontsize, "timerTime" => $timertime
     ));
     $non_string = array("headers", "showCoords", "coordsInner", "showFen", "hideMovesBefore", "showResult",
         "coordsFactor", "timerTime", "coordsFontSize");
