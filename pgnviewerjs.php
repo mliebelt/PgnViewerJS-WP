@@ -52,7 +52,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $boardsize = $args['boardsize'];
     $size = $args['size'];
     //$scrollable = filter_var( $args['scrollable'], FILTER_VALIDATE_BOOLEAN );
-    $showNotation = filter_var( $args['show_notation'], FILTER_VALIDATE_BOOLEAN );
+    $showcoords = filter_var( $args['showcoords'], FILTER_VALIDATE_BOOLEAN );
     $layout = $args['layout'];
     $movesheight = $args['movesheight'];
     $colormarker = $args['colormarker'];
@@ -72,27 +72,35 @@ function pgnbase($attributes, $content = NULL, $mode) {
     if (!empty($fen)) {
         $position = $fen;
     }
-    //$scrollable = $scrollable ? 'true' : 'false';
-    $showNotation = $showNotation ? 'true' : 'false';
+    $showcoords = $showcoords ? 'true' : 'false';
 
     $text = "Parameters: ";
     $text .= "ID: " . $id;
     $text .= " locale: " . $locale . " piecestyle: " . $piecestyle . " orientation: " . $orientation;
     $text .= " theme: " . $theme . " boardsize: " . $boardsize . " width: " . $size . " position: " . $position ;
-    $text .= " showNotation: " . $showNotation . " layout: " . $layout . " movesheight: " . $movesheight;
+    $text .= " showCoords: " . $showcoords . " layout: " . $layout . " movesheight: " . $movesheight;
     $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner;
-    $text .=  " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
+    $text .= " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
+    $text .= " showresult: " . $showresult;
 
     $config = array(
         "locale"  => $locale, "pieceStyle" => $piecestyle, "orientation" => $orientation, "theme" => $theme,
-        "boardSize" => $boardsize, "width" => $size, "position" => $position, "showNotation" => $showNotation,
+        "boardSize" => $boardsize, "width" => $size, "position" => $position, "showCoords" => $showcoords,
         "layout" => $layout, "movesHeight" => $movesheight, "colorMarker" => $colormarker, "showResult" => $showresult,
-        "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers
+        "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers,
+        "showResult" => $showresult
     );
     $config2 = array_filter($config);
+    $non_string = array("headers", "showCoords", "coordsInner", "showFen", "hideMovesBefore", "showResult",
+        "coordsFactor", "timerTime");
     $config_string = "";
     foreach ($config2 as $key => $value) {
-        $config_string .= ", " . $key . ": '" . $value . "'";
+        $config_string .= ", " . $key . ": ";
+        if (in_array($key, $non_string)) {
+            $config_string .= $value;
+        } else {
+            $config_string .= "'". $value . "'";
+        }
     }
 
     $float = <<<EOD
