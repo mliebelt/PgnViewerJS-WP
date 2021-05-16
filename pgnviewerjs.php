@@ -41,7 +41,8 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'startplay' => NULL,
         'headers' => true,
         'notation' => NULL,
-        'notationlayout' => NULL
+        'notationlayout' => NULL,
+        'showfen' => false
 
     ), $attributes, 'shortcodeWPSE' );
     $id = $args['id'];
@@ -64,6 +65,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $headers = $args['headers'];
     $notation = $args['notation'];
     $notationlayout = $args['notationlayout'];
+    $showfen = $args['showfen'];
 
     $cleaned = cleanup_pgnv($content);
     error_log("PGN:'" . $cleaned . "'", 0);
@@ -85,13 +87,14 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner;
     $text .= " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
     $text .= " showresult: " . $showresult . " notation: " . $notation . " notationLayout: " . $notationlayout;
+    $text .= " showfen: " . $showfen;
 
     $config2 = array_filter(array(
         "locale"  => $locale, "pieceStyle" => $piecestyle, "orientation" => $orientation, "theme" => $theme,
         "boardSize" => $boardsize, "width" => $size, "position" => $position, "showCoords" => $showcoords,
         "layout" => $layout, "movesHeight" => $movesheight, "colorMarker" => $colormarker, "showResult" => $showresult,
         "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers,
-        "showResult" => $showresult, "notation" => $notation, "notationLayout" => $notationlayout
+        "showResult" => $showresult, "notation" => $notation, "notationLayout" => $notationlayout, "showFen" => $showfen
     ));
     $non_string = array("headers", "showCoords", "coordsInner", "showFen", "hideMovesBefore", "showResult",
         "coordsFactor", "timerTime");
