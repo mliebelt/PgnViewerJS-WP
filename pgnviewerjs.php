@@ -31,7 +31,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'theme' => 'zeit',
         'boardsize' => NULL,
         'size' => NULL,
-        'show_notation' => 1,
+        'showcoords' => true,
         'layout' => NULL,
         'movesheight' => NULL,
         'colormarker' => NULL,
@@ -39,7 +39,8 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'coordsinner' => true,
         'coordsfactor' => 1,
         'startplay' => NULL,
-        'headers' => true
+        'headers' => true,
+        'notation' => NULL
 
     ), $attributes, 'shortcodeWPSE' );
     $id = $args['id'];
@@ -51,7 +52,6 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $theme = $args['theme'];
     $boardsize = $args['boardsize'];
     $size = $args['size'];
-    //$scrollable = filter_var( $args['scrollable'], FILTER_VALIDATE_BOOLEAN );
     $showcoords = filter_var( $args['showcoords'], FILTER_VALIDATE_BOOLEAN );
     $layout = $args['layout'];
     $movesheight = $args['movesheight'];
@@ -61,6 +61,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $coordsfactor = $args['coordsfactor'];
     $startplay = $args['startplay'];
     $headers = $args['headers'];
+    $notation = $args['notation'];
 
     $cleaned = cleanup_pgnv($content);
     error_log("PGN:'" . $cleaned . "'", 0);
@@ -81,16 +82,15 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $text .= " showCoords: " . $showcoords . " layout: " . $layout . " movesheight: " . $movesheight;
     $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner;
     $text .= " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
-    $text .= " showresult: " . $showresult;
+    $text .= " showresult: " . $showresult . " notation: " . $notation;
 
-    $config = array(
+    $config2 = array_filter(array(
         "locale"  => $locale, "pieceStyle" => $piecestyle, "orientation" => $orientation, "theme" => $theme,
         "boardSize" => $boardsize, "width" => $size, "position" => $position, "showCoords" => $showcoords,
         "layout" => $layout, "movesHeight" => $movesheight, "colorMarker" => $colormarker, "showResult" => $showresult,
         "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers,
-        "showResult" => $showresult
-    );
-    $config2 = array_filter($config);
+        "showResult" => $showresult, "notation" => $notation
+    ));
     $non_string = array("headers", "showCoords", "coordsInner", "showFen", "hideMovesBefore", "showResult",
         "coordsFactor", "timerTime");
     $config_string = "";
