@@ -63,7 +63,7 @@ This will explain the configuration options that are directly supported. Details
 * `piecestyle`: values are `merida` (default), `wikipedia`, `alpha`, `uscf`, `case`, `condal`, `maya`, `leipzig`, `beyer` and `chesscom`.
 * `theme`: values are `zeit` (default), `green`, `chesscom`, `informator`, `sportverlag`, `beyer`, `falken`, `blue`.
 
-For other configuration parameters, see the [online documentation of the configuration of the original viewer](https://mliebelt.github.io/PgnViewerJS/docu.html).
+For other configuration parameters, see the [online documentation of the configuration of the original viewer](https://mliebelt.github.io/PgnViewerJS/docu.html). Convention here is, that the parameters are all lowercase in WP, but converted then back for the call of `PgnViewerJS`.
 
 A complete example looks like:
 

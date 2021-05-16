@@ -4,7 +4,7 @@ Donate link:
 Tags: chess, pgn
 Requires at least: 4.6
 Tested up to: 5.7
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,11 @@ For a list of available parameters, look into the Frequently Asked Questions.
 
 
 == Upgrade Notice ==
+
+= 1.1.3 =
+
+* Added all known parameters of PgnViewerJS of version 1.5.3
+* Ensure that all parameters are written in the correct format
 
 = 1.1.2  =
 
