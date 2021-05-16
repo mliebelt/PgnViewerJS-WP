@@ -4,7 +4,7 @@ Donate link:
 Tags: chess, pgn
 Requires at least: 4.6
 Tested up to: 5.7
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,10 @@ For a list of available parameters, look into the Frequently Asked Questions.
 
 
 == Upgrade Notice ==
+
+= 1.1.4 =
+
+* Updated PHP file with version as well.
 
 = 1.1.3 =
 
