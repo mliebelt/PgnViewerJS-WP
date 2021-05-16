@@ -44,7 +44,8 @@ function pgnbase($attributes, $content = NULL, $mode) {
         'notationlayout' => NULL,
         'showfen' => false,
         'coordsfontsize' => NULL,
-        'timertime' => NULL
+        'timertime' => NULL,
+        'hidemovesbefore' => NULL
 
     ), $attributes, 'shortcodeWPSE' );
     $id = $args['id'];
@@ -70,6 +71,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $showfen = $args['showfen'];
     $coordsfontsize = $args['coordsfontsize'];
     $timertime = $args['timertime'];
+    $hidemovesbefore = $args['hidemovesbefore'];
 
     $cleaned = cleanup_pgnv($content);
     error_log("PGN:'" . $cleaned . "'", 0);
@@ -92,6 +94,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
     $text .= " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
     $text .= " showresult: " . $showresult . " notation: " . $notation . " notationLayout: " . $notationlayout;
     $text .= " showfen: " . $showfen . " coordsfontsize: " . $coordsfontsize . " timertime: " . $timertime;
+    $text .= " hideMovesBefore: " . $hidemovesbefore;
 
     $config2 = array_filter(array(
         "locale"  => $locale, "pieceStyle" => $piecestyle, "orientation" => $orientation, "theme" => $theme,
@@ -99,7 +102,7 @@ function pgnbase($attributes, $content = NULL, $mode) {
         "layout" => $layout, "movesHeight" => $movesheight, "colorMarker" => $colormarker, "showResult" => $showresult,
         "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers,
         "showResult" => $showresult, "notation" => $notation, "notationLayout" => $notationlayout, "showFen" => $showfen,
-        "coordsFontSize" => $coordsfontsize, "timerTime" => $timertime
+        "coordsFontSize" => $coordsfontsize, "timerTime" => $timertime, "hideMovesBefore" => $hidemovesbefore
     ));
     $non_string = array("headers", "showCoords", "coordsInner", "showFen", "hideMovesBefore", "showResult",
         "coordsFactor", "timerTime", "coordsFontSize");
