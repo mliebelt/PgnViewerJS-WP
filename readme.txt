@@ -4,7 +4,7 @@ Donate link:
 Tags: chess, pgn
 Requires at least: 4.6
 Tested up to: 5.7
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -83,6 +83,10 @@ Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP 
 4. Example for use of pgnPrint (shortcode pgnp).
 
 == Changelog ==
+
+= 1.1.5 =
+
+* Upgraded to version 1.5.6 of PgnViewerJS.
 
 = 1.1.4 =
 
