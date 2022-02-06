@@ -3,8 +3,8 @@ Contributors: mliebelt
 Donate link: 
 Tags: chess, pgn
 Requires at least: 4.6
-Tested up to: 5.7
-Stable tag: 1.1.5
+Tested up to: 5.9
+Stable tag: 1.5.13
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,17 @@ The parameters the viewer understands are:
 The following code shows how to use some of the parameters in a page:
 
     [pgnv locale=fr piecestyle=uscf orientation=black theme=zeit size=500px]1. e4 e5 2. Nf3 Nc6[/pgnv]
+
+= What if I want to use most of the parameters the same all the time? =
+
+There is a Javascript variable `PgnBaseDefaults` that you could set. Do the following:
+
+* Go as admin of your Wordpress site to Appearance > Theme Editor
+* Search on the right the theme file named `Theme Header` (== `header.php`).
+* Search inside that file the section that begins with `<head>`.
+* Insert somewhere before the plugins are loaded the following: `<script>const PgnBaseDefaults = { locale: 'de', layout: 'left',  size: '720px' }</script>` (of course with the defaults you like).
+
+When you now create new pages, you can leave out the parameters you have already set per default. And you can of course overwrite them by having individual parameters set in the call.
 
 = Where can I find more information about the implementation? =
 
