@@ -5,8 +5,8 @@ Tags: chess, pgn
 Requires at least: 4.6
 Tested up to: 5.9
 Stable tag: 1.5.13
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPL-3.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Integration of PgnViewerJS into WordPress.
 

@@ -16,7 +16,6 @@
     "path-parse": ">=1.0.7"
   },
   "scripts": {
-    "wp-env": "wp-env",
     "start": "wp-env start",
     "stop": "wp-env stop",
     "build": "grunt default"
