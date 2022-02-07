@@ -95,6 +95,11 @@ Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP 
 
 == Changelog ==
 
+= 1.5.13 =
+
+* Upgarde to version 1.5.13 of PgnViewerJS (so the big change in version number).
+* Remove some of the defaults, so that those defaults may be overwritten by setting `PgnBaseDefault`. See the FAQ to that topic.
+
 = 1.1.5 =
 
 * Upgraded to version 1.5.6 of PgnViewerJS.
