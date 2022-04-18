@@ -10,7 +10,7 @@
     "@mliebelt/pgn-viewer": "^1.6.0",
     "@wordpress/env": "^4.5.0",
     "grunt": "^1.5.2",
-    "grunt-contrib-clean": "~2.0.0",
+    "grunt-contrib-clean": "~2.0.1",
     "grunt-contrib-compress": "~2.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "path-parse": ">=1.0.7"
