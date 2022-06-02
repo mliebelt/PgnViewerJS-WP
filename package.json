@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@mliebelt/pgn-viewer": "^1.6.0",
-    "@wordpress/env": "^4.7.0",
+    "@wordpress/env": "^4.8.0",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "~2.0.1",
     "grunt-contrib-compress": "~2.0.0",
