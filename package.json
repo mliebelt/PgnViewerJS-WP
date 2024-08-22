@@ -7,7 +7,7 @@
     "url": "https://github.com/mliebelt/PgnViewerJS-WP.git"
   },
   "devDependencies": {
-    "@mliebelt/pgn-viewer": "^1.6.8",
+    "@mliebelt/pgn-viewer": "^1.6.9",
     "@wordpress/env": "^10.6.0",
     "grunt": "^1.6.1",
     "grunt-contrib-clean": "~2.0.1",
