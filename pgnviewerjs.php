@@ -1,175 +1,158 @@
 <?php
+declare(strict_types=1);
 
 /*
 Plugin Name: PgnViewerJS
-Plugin URI: https://github.com/mliebelt/PgnViewerJS-WP
-Description: Integrates the PgnViewerJS into Wordpress
-Version: 1.1.5
+Plugin URI: https://github.com/mliebelt/pgn-viewer
+Description: Integrates the PgnViewerJS into WordPress
+Version: 1.6.10
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: Apache License Version 2.0
+Text Domain: pgn-viewer
+Domain Path: /languages
 */
 
-function pgnv_js_and_css(){
-    wp_enqueue_script('pgnviewerjs', plugins_url('js/pgnv.js', __FILE__));
-    wp_enqueue_style('pgnviewerjs-css', plugins_url('css/wp-pgnv.css', __FILE__));
-    wp_enqueue_style('wp-pgnv-css', plugins_url('css/wp-pgnv.css', __FILE__));
+// Load plugin text domain for translations
+function pgn_viewer_load_textdomain(): void {
+    load_plugin_textdomain('pgn-viewer', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
+add_action('plugins_loaded', 'pgn_viewer_load_textdomain');
 
-add_action('wp_enqueue_scripts', 'pgnv_js_and_css');
+// Register and enqueue scripts and styles
+function pgn_viewer_enqueue_assets(): void {
+    wp_register_script(
+        'pgnviewerjs',
+        plugins_url('js/dist.js', __FILE__),
+        [],
+        '1.6.10',
+        true
+    );
+    wp_register_style(
+        'pgnviewerjs-styles',
+        plugins_url('css/wp-pgnv.css', __FILE__),
+        [],
+        '1.6.10'
+    );
 
-// [pgnv id=board pieceStyle=merida locale=fr orientation=black theme=chesscom boardSize=200px size=500px] 1. e4 e5 2. Nf3 Nc6 3. Bb5 [/pgnv]
-function pgnbase($attributes, $content = NULL, $mode) {
-    $loc = get_locale();
-    $args = shortcode_atts( array(
-        'id' => NULL,
-        'locale' => NULL,
-        'fen' => NULL,
+    // Enqueue scripts and styles conditionally
+    if (has_shortcode(get_post()->post_content ?? '', 'pgnv') ||
+        has_shortcode(get_post()->post_content ?? '', 'pgne') ||
+        has_shortcode(get_post()->post_content ?? '', 'pgnb') ||
+        has_shortcode(get_post()->post_content ?? '', 'pgnp')) {
+        wp_enqueue_script('pgnviewerjs');
+        wp_enqueue_style('pgnviewerjs-styles');
+    }
+}
+add_action('wp_enqueue_scripts', 'pgn_viewer_enqueue_assets');
+
+// Generate the base structure for PGN Viewer
+function pgn_viewer_render(array $attributes, string $content = '', string $mode = 'pgnView'): string {
+    $loc = get_locale() ?? 'en_US';
+    $attributes = shortcode_atts([
+        'id' => null,
+        'locale' => null,
+        'fen' => null,
         'position' => 'start',
-        'piecestyle' => NULL,
+        'piecestyle' => null,
         'orientation' => 'white',
         'theme' => 'zeit',
-        'boardsize' => NULL,
-        'size' => NULL,
+        'boardsize' => '400px',
+        'size' => '500px',
         'showcoords' => true,
-        'layout' => NULL,
-        'movesheight' => NULL,
-        'colormarker' => NULL,
+        'layout' => null,
+        'movesheight' => null,
+        'colormarker' => null,
         'showresult' => false,
         'coordsinner' => true,
         'coordsfactor' => 1,
-        'startplay' => NULL,
+        'startplay' => null,
         'headers' => true,
-        'notation' => NULL,
-        'notationlayout' => NULL,
+        'notation' => null,
+        'notationlayout' => null,
         'showfen' => false,
-        'coordsfontsize' => NULL,
-        'timertime' => NULL,
-        'hidemovesbefore' => NULL
+        'coordsfontsize' => null,
+        'timertime' => null,
+        'hidemovesbefore' => null,
+    ], $attributes, 'shortcodeWPSE');
 
-    ), $attributes, 'shortcodeWPSE' );
-    $id = $args['id'];
-    $locale = $args['locale'];
-    $fen = $args['fen'];
-    $position = $args['position'];
-    $piecestyle = $args['piecestyle'];
-    $orientation = $args['orientation'];
-    $theme = $args['theme'];
-    $boardsize = $args['boardsize'];
-    $size = $args['size'];
-    $showcoords = filter_var( $args['showcoords'], FILTER_VALIDATE_BOOLEAN );
-    $layout = $args['layout'];
-    $movesheight = $args['movesheight'];
-    $colormarker = $args['colormarker'];
-    $showresult = $args['showresult'];
-    $coordsinner = $args['coordsinner'];
-    $coordsfactor = $args['coordsfactor'];
-    $startplay = $args['startplay'];
-    $headers = $args['headers'];
-    $notation = $args['notation'];
-    $notationlayout = $args['notationlayout'];
-    $showfen = $args['showfen'];
-    $coordsfontsize = $args['coordsfontsize'];
-    $timertime = $args['timertime'];
-    $hidemovesbefore = $args['hidemovesbefore'];
+    // Apply stricter typing for booleans
+    $showCoords = filter_var($attributes['showcoords'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+    $showResult = filter_var($attributes['showresult'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+    $coordsInner = filter_var($attributes['coordsinner'], FILTER_VALIDATE_BOOLEAN);
 
-    $cleaned = cleanup_pgnv($content);
-    error_log("PGN:'" . $cleaned . "'", 0);
+    $config = array_filter([
+        'locale' => $attributes['locale'] ?? $loc,
+        'pieceStyle' => $attributes['piecestyle'],
+        'orientation' => $attributes['orientation'],
+        'theme' => $attributes['theme'],
+        'boardSize' => $attributes['boardsize'],
+        'width' => $attributes['size'],
+        'position' => $attributes['fen'] ?? $attributes['position'],
+        'showCoords' => $showCoords,
+        'layout' => $attributes['layout'],
+        'movesHeight' => $attributes['movesheight'],
+        'colorMarker' => $attributes['colormarker'],
+        'coordsFactor' => $attributes['coordsfactor'],
+        'startPlay' => $attributes['startplay'],
+        'headers' => $attributes['headers'],
+        'notation' => $attributes['notation'],
+        'notationLayout' => $attributes['notationlayout'],
+        'showFen' => $attributes['showfen'],
+        'coordsFontSize' => $attributes['coordsfontsize'],
+        'timerTime' => $attributes['timertime'],
+        'hideMovesBefore' => $attributes['hidemovesbefore'],
+    ]);
 
-    if (is_null($id)) {
-        $id = generateRandomString();
+    // Generate unique ID if not provided
+    $id = $attributes['id'] ?? generate_random_string();
+
+    // Cleanup PGN content
+    $cleanedContent = cleanup_pgnv($content);
+
+    // Generate JavaScript config string
+    $configString = '';
+    foreach ($config as $key => $value) {
+        $configString .= sprintf(", %s: %s", $key, is_bool($value) ? json_encode($value) : "'" . esc_js($value) . "'");
     }
 
-    if (!empty($fen)) {
-        $position = $fen;
-    }
-    $showcoords = $showcoords ? 'true' : 'false';
-
-    $text = "Parameters: ";
-    $text .= "ID: " . $id;
-    $text .= " locale: " . $locale . " piecestyle: " . $piecestyle . " orientation: " . $orientation;
-    $text .= " theme: " . $theme . " boardsize: " . $boardsize . " width: " . $size . " position: " . $position ;
-    $text .= " showCoords: " . $showcoords . " layout: " . $layout . " movesheight: " . $movesheight;
-    $text .= " colormarker: " . $colormarker . " showresult: " . $showresult . " coordsinner: " . $coordsinner;
-    $text .= " coordsfactor: " . $coordsfactor . " startplay: " . $startplay . " headers: " . $headers;
-    $text .= " showresult: " . $showresult . " notation: " . $notation . " notationLayout: " . $notationlayout;
-    $text .= " showfen: " . $showfen . " coordsfontsize: " . $coordsfontsize . " timertime: " . $timertime;
-    $text .= " hideMovesBefore: " . $hidemovesbefore;
-
-    $config2 = array_filter(array(
-        "locale"  => $locale, "pieceStyle" => $piecestyle, "orientation" => $orientation, "theme" => $theme,
-        "boardSize" => $boardsize, "width" => $size, "position" => $position, "showCoords" => $showcoords,
-        "layout" => $layout, "movesHeight" => $movesheight, "colorMarker" => $colormarker, "showResult" => $showresult,
-        "coordsInner" => $coordsinner, "coordsFactor" => $coordsfactor, "startPlay" => $startplay, "headers" => $headers,
-        "showResult" => $showresult, "notation" => $notation, "notationLayout" => $notationlayout, "showFen" => $showfen,
-        "coordsFontSize" => $coordsfontsize, "timerTime" => $timertime, "hideMovesBefore" => $hidemovesbefore
-    ));
-    $non_string = array("headers", "showCoords", "coordsInner", "showFen", "hideMovesBefore", "showResult",
-        "coordsFactor", "timerTime", "coordsFontSize");
-    $config_string = "";
-    foreach ($config2 as $key => $value) {
-        $config_string .= ", " . $key . ": ";
-        if (in_array($key, $non_string)) {
-            $config_string .= $value;
-        } else {
-            $config_string .= "'". $value . "'";
-        }
-    }
-
-    $float = <<<EOD
-<div id="$id"></div>
-EOD;
-    $template = <<<EOD
-$float
-
-
-<script>
-    PGNV.$mode('$id', { pgn: '$cleaned' $config_string});
-</script>
-
-EOD;
-//   return $text . print_r($config2) . $template;  // Uncomment this  line to see parameters displayed
-   return $template;
+    // Return final output
+    return sprintf(
+        '<div id="%1$s"></div><script>setTimeout(function () {
+            if (typeof PGNV !== "undefined") {
+                PGNV.pgnView("%1$s", { pgn: "%3$s" %4$s });
+            } else {
+                console.error("PGNV is not available even after timeout");
+            }
+        }, 100); // Delay execution by 100ms</script>',
+        esc_attr($id),
+        esc_js($mode),
+        esc_js($cleanedContent),
+        $configString
+    );
 }
 
-function pgnviewer($attributes, $content) {
-    return pgnbase($attributes, $content, "pgnView");
+// Shortcode callbacks
+function pgn_viewer_shortcode(array $attributes, string $content = ''): string {
+    return pgn_viewer_render($attributes, $content, 'pgnView');
+}
+add_shortcode('pgnv', 'pgn_viewer_shortcode');
+
+// Utility: PGN Cleaning
+function cleanup_pgnv(string $string): string {
+    $search = [
+        '…', '...', '&#8230;', '&#8221;', '&#8220;', '&#8222;',
+        "\r\n", "\n", "\r", '<br />', '<br>', '<p>', '</p>', '&nbsp;'
+    ];
+    $replace = [
+        '...', '...', '...', '"', '"', '"',
+        ' ', ' ', ' ', '', '', '', '', ' '
+    ];
+    $string = str_replace($search, $replace, $string);
+    return esc_html(trim(preg_replace('/\s+/', ' ', $string)));
 }
 
-function pgnedit($attributes, $content) {
-    return pgnbase($attributes, $content, "pgnEdit");
+// Generate random string
+function generate_random_string(int $length = 10): string {
+    return 'id' . wp_generate_uuid4();
 }
-
-function pgnboard($attributes, $content) {
-    return pgnbase($attributes, $content, "pgnBoard");
-}
-
-function pgnprint($attributes, $content) {
-    return pgnbase($attributes, $content, "pgnPrint");
-}
-
-
-add_shortcode( 'pgnv', 'pgnviewer');
-add_shortcode( 'pgne', 'pgnedit');
-add_shortcode( 'pgnb', 'pgnboard');
-add_shortcode( 'pgnp', 'pgnprint');
-
-// Cleanup the content, so it will not have any errors. Known are
-// * line breaks ==> Spaces
-// * Pattern: ... ==> ..
-function cleanup_pgnv( $string ) {
-    $search = array("…", "...", "&#8230;", '&#8221;', '&#8220;', '&#8222;');
-    $replace = array("...", "...", "...", '"', '"', '"');
-    $tmp = str_replace($search, $replace, $string);
-    $tmp = str_replace (array("\r\n", "\n", "\r", "<br />", "<br>", "<p>", "</p>", "&nbsp;"), ' ', $tmp);
-    $tmp = trim($tmp," \t\n\r");
-    $tmp = preg_replace('~\xc2\xa0~', ' ', $tmp);
-    return preg_replace('/\s+/', ' ', $tmp);
-}
-
-// Taken from https://stackoverflow.com/questions/4356289/php-random-string-generator
-function generateRandomString($length = 10) {
-    return 'id' . substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-}
-
-?>

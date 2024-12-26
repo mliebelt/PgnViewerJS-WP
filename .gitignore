@@ -50,3 +50,5 @@ settings.json
 # Ignore from IntelliJ IDEA
 pgnviewerjs-wp.properties
 pgnviewerjs-wp.xml
+/build/index.asset.php
+/build/index.js

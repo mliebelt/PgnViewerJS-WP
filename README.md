@@ -1,7 +1,14 @@
 PgnViewerJS-WP
 ==============
 
-Integration of PgnViewerJS into WordPress. This is a small layer around the original [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a WordPress installation. The plugin should provide the following interfaces:
+Integration of PgnViewerJS into WordPress. This is a small layer around the original [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a WordPress installation. The plugin should work in 2 different ways: providing a shortcode, and providing a Gutenberg block element. Both should lead at the end to the same result.
+
+### Shortcode
+
+To use a shortcode, do the following steps:
+
+1. Enter on a new element `/shortcode`.
+2. Enterinside the element then the shortcode including the content of the following sections.
 
 #### Basic View ####
 
@@ -30,6 +37,18 @@ Displays a board position only, no moves.
      
 Allows to print a game in a format similar to magazines and books. For that purpose, the notation
      of PGN was expanded by the "D" at the end of a move, that stands for the diagram.
+
+### Block Level Element
+
+You can use instead the following:
+
+1. Enter as block element `/PGN Viewer JS`, in the variants ` View`, ` Edit`, ` Board` or ` Print`. 
+2. You will then have a form with all options that are possible with the shortcode as well.
+3. Depending on the kind of element you want to have, different values are needed:
+    * View: all possible
+    * Edit: same as view
+    * Board: only FEN and layout elements of the board
+    * Print: most not needed.
 
 ### Build ###
 
