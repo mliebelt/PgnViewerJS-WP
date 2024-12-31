@@ -21,6 +21,7 @@
   "scripts": {
     "start": "wp-env start",
     "stop": "wp-env stop",
-    "build": "grunt default"
+    "build": "grunt default && wp-scripts build"
+
   }
 }

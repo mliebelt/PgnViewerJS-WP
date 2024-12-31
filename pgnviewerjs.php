@@ -21,115 +21,96 @@ add_action('plugins_loaded', 'pgn_viewer_load_textdomain');
 
 // Register and enqueue scripts and styles
 function pgn_viewer_enqueue_assets(): void {
-    wp_register_script(
-        'pgnviewerjs',
-        plugins_url('js/dist.js', __FILE__),
-        [],
-        '1.6.10',
-        true
-    );
-    wp_register_style(
-        'pgnviewerjs-styles',
-        plugins_url('css/wp-pgnv.css', __FILE__),
-        [],
-        '1.6.10'
-    );
 
     // Enqueue scripts and styles conditionally
-    if (has_shortcode(get_post()->post_content ?? '', 'pgnv') ||
-        has_shortcode(get_post()->post_content ?? '', 'pgne') ||
-        has_shortcode(get_post()->post_content ?? '', 'pgnb') ||
-        has_shortcode(get_post()->post_content ?? '', 'pgnp')) {
+//    if (has_shortcode(get_post()->post_content ?? '', 'pgnv') ||
+//        has_shortcode(get_post()->post_content ?? '', 'pgne') ||
+//        has_shortcode(get_post()->post_content ?? '', 'pgnb') ||
+//        has_shortcode(get_post()->post_content ?? '', 'pgnp')) {
         wp_enqueue_script('pgnviewerjs');
         wp_enqueue_style('pgnviewerjs-styles');
-    }
+//    }
+    wp_register_script(
+        'pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '1.6.10', true);
+    wp_register_style(
+        'pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '1.6.10');
 }
 add_action('wp_enqueue_scripts', 'pgn_viewer_enqueue_assets');
 
-// Generate the base structure for PGN Viewer
 function pgn_viewer_render(array $attributes, string $content = '', string $mode = 'pgnView'): string {
-    $loc = get_locale() ?? 'en_US';
-    $attributes = shortcode_atts([
-        'id' => null,
-        'locale' => null,
-        'fen' => null,
-        'position' => 'start',
-        'piecestyle' => null,
-        'orientation' => 'white',
-        'theme' => 'zeit',
-        'boardsize' => '400px',
-        'size' => '500px',
-        'showcoords' => true,
-        'layout' => null,
-        'movesheight' => null,
-        'colormarker' => null,
-        'showresult' => false,
-        'coordsinner' => true,
-        'coordsfactor' => 1,
-        'startplay' => null,
-        'headers' => true,
-        'notation' => null,
-        'notationlayout' => null,
-        'showfen' => false,
-        'coordsfontsize' => null,
-        'timertime' => null,
-        'hidemovesbefore' => null,
-    ], $attributes, 'shortcodeWPSE');
+    ob_start();
+    // Extract block attributes
+    $position = $attributes['position'] ?? '';
+    $pgn = $content;
+    $layout = $attributes['layout'] ?? 'left';
+    $orientation = $attributes['orientation'] ?? 'white';
+    $piecestyle = $attributes['piecestyle'] ?? 'merida';
+    $theme = $attributes['theme'] ?? 'zeit';
+    $boardsize = $attributes['boardsize'] ?? '400px';
+    $width = $attributes['width'] ?? '500px';
+    $movesheight = $attributes['movesheight'] ?? null;
+    $moveswidth = $attributes['moveswidth'] ?? null;
+    $timertime = $attributes['timertime'] ?? null;
+    $notationlayout = $attributes['notationlayout'] ?? 'inline';
+    $notation = $attributes['notation'] ?? 'short';
+    $headers = $attributes['headers'] ?? true;
+    $showcoords = $attributes['showcoords'] ?? true;
+    $coordsinner = $attributes['coordsinner'] ?? true;
+    $figurine = $attributes['figurine'] ?? null;
+    $locale = $attributes['locale'] ?? 'en';
 
-    // Apply stricter typing for booleans
-    $showCoords = filter_var($attributes['showcoords'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
-    $showResult = filter_var($attributes['showresult'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
-    $coordsInner = filter_var($attributes['coordsinner'], FILTER_VALIDATE_BOOLEAN);
-
-    $config = array_filter([
-        'locale' => $attributes['locale'] ?? $loc,
-        'pieceStyle' => $attributes['piecestyle'],
-        'orientation' => $attributes['orientation'],
-        'theme' => $attributes['theme'],
-        'boardSize' => $attributes['boardsize'],
-        'width' => $attributes['size'],
-        'position' => $attributes['fen'] ?? $attributes['position'],
-        'showCoords' => $showCoords,
-        'layout' => $attributes['layout'],
-        'movesHeight' => $attributes['movesheight'],
-        'colorMarker' => $attributes['colormarker'],
-        'coordsFactor' => $attributes['coordsfactor'],
-        'startPlay' => $attributes['startplay'],
-        'headers' => $attributes['headers'],
-        'notation' => $attributes['notation'],
-        'notationLayout' => $attributes['notationlayout'],
-        'showFen' => $attributes['showfen'],
-        'coordsFontSize' => $attributes['coordsfontsize'],
-        'timerTime' => $attributes['timertime'],
-        'hideMovesBefore' => $attributes['hidemovesbefore'],
-    ]);
-
-    // Generate unique ID if not provided
+    // Generate unique ID for the block
     $id = $attributes['id'] ?? generate_random_string();
 
-    // Cleanup PGN content
-    $cleanedContent = cleanup_pgnv($content);
+    // Build config options passed to the viewer
+    $config = array_filter([
+        'position' => $position,
+        'pgn' => $pgn,
+        'orientation' => $orientation,
+        'pieceStyle' => $piecestyle,
+        'theme' => $theme,
+        'boardSize' => $boardsize,
+        'width' => $width,
+        'movesHeight' => $movesheight,
+        'movesWidth' => $moveswidth,
+        'notationLayout' => $notationlayout, // inline / list
+        'timerTime' => $timertime, // in millis
+        'notation' => $notation, // short / long
+        'headers' => $headers,
+        'showCoords' => $showcoords,
+        'coordsInner' => $coordsinner,
+        'layout' => $layout, // left / right / top / bottom
+        'figurine' => $figurine, // alpha / merida / berlin / noto / cachess
+        'locale' => $locale,
+    ]);
 
-    // Generate JavaScript config string
+    // Generate the layout structure with attributes
+    $layout = '';
     $configString = '';
     foreach ($config as $key => $value) {
-        $configString .= sprintf(", %s: %s", $key, is_bool($value) ? json_encode($value) : "'" . esc_js($value) . "'");
+        $configString .= sprintf("\"%s\": \"%s\" ,", esc_attr($key), esc_attr($value));
     }
+    error_log('Config string is: ' . $configString);
 
-    // Return final output
-    return sprintf(
-        '<div id="%1$s"></div><script>setTimeout(function () {
-            if (typeof PGNV !== "undefined") {
-                PGNV.pgnView("%1$s", { pgn: "%3$s" %4$s });
-            } else {
-                console.error("PGNV is not available even after timeout");
-            }
-        }, 100); // Delay execution by 100ms</script>',
-        esc_attr($id),
-        esc_js($mode),
-        esc_js($cleanedContent),
+
+    // Render the PGN Viewer block
+    $output = sprintf(
+        '<div id="%s" class="pgn-viewer-block-wrapper"></div>
+        <script type="application/javascript">
+            setTimeout(function () {
+                if (typeof PGNV !== "undefined") {
+                    console.log("Initializing PGNV");
+                    PGNV.pgnView("%s", { %s });
+                } else {
+                    console.error("PGNV is not loaded properly!");
+                }
+            }, 500);
+        </script>',
+        esc_attr($id), // ID
+        esc_attr($id), // Viewer JS initialization
         $configString
     );
+    return $output;
 }
 
 // Shortcode callbacks
@@ -156,3 +137,32 @@ function cleanup_pgnv(string $string): string {
 function generate_random_string(int $length = 10): string {
     return 'id' . wp_generate_uuid4();
 }
+
+// Enqueue scripts and styles for the block editor and frontend
+function pgnv_block_assets() {
+    // Frontend styles
+    wp_enqueue_style(
+        'pgnviewerjs-styles-front',
+        plugins_url('css/pgnv_styles.css', __FILE__),
+        [],
+        '1.6.10'
+    );
+
+    // Editor styles (for block editor)
+    wp_enqueue_style(
+        'pgnviewerjs-styles-editor',
+        plugins_url('css/pgnv_styles.css', __FILE__),
+        ['wp-edit-blocks'], // Depends on the default editor styles
+        '1.6.10'
+    );
+
+    // Block-specific editor script
+    wp_enqueue_script(
+        'pgnviewerjs-editor',
+        plugins_url('build/index.js', __FILE__), // Replace with correct path to your block code
+        ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'], // Dependencies
+        '1.6.10',
+        true
+    );
+}
+add_action('enqueue_block_assets', 'pgnv_block_assets');
