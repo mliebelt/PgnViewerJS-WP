@@ -36,6 +36,7 @@ function pgn_viewer_enqueue_assets(): void {
         'pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '1.6.10');
 }
 add_action('wp_enqueue_scripts', 'pgn_viewer_enqueue_assets');
+add_action('enqueue_block_editor_assets', 'pgn_viewer_enqueue_scripts');
 
 function pgn_viewer_render(array $attributes, string $content = '', string $mode = 'pgnView'): string {
     ob_start();
@@ -90,7 +91,7 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
     foreach ($config as $key => $value) {
         $configString .= sprintf("\"%s\": \"%s\" ,", esc_attr($key), esc_attr($value));
     }
-    error_log('Config string is: ' . $configString);
+    // error_log('Config string is: ' . $configString);
 
 
     // Render the PGN Viewer block
@@ -140,29 +141,37 @@ function generate_random_string(int $length = 10): string {
 
 // Enqueue scripts and styles for the block editor and frontend
 function pgnv_block_assets() {
-    // Frontend styles
+    // Frontend and editor styles
     wp_enqueue_style(
-        'pgnviewerjs-styles-front',
+        'pgnviewerjs-styles',
         plugins_url('css/pgnv_styles.css', __FILE__),
         [],
         '1.6.10'
     );
 
-    // Editor styles (for block editor)
-    wp_enqueue_style(
-        'pgnviewerjs-styles-editor',
-        plugins_url('css/pgnv_styles.css', __FILE__),
-        ['wp-edit-blocks'], // Depends on the default editor styles
-        '1.6.10'
-    );
-
-    // Block-specific editor script
+    // Block editor script
     wp_enqueue_script(
         'pgnviewerjs-editor',
-        plugins_url('build/index.js', __FILE__), // Replace with correct path to your block code
-        ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'], // Dependencies
+        plugins_url('build/index.js', __FILE__),
+        ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components'],
         '1.6.10',
         true
     );
 }
 add_action('enqueue_block_assets', 'pgnv_block_assets');
+add_action('enqueue_block_editor_assets', 'pgnv_block_assets');
+
+// Registration of element block
+function pgn_viewer_register_block() {
+    if (function_exists('register_block_type')) {
+        register_block_type('pgn-viewer/block-editor', array(
+            'editor_script' => 'pgnviewerjs-editor',
+            'render_callback' => 'pgn_viewer_render_block'
+        ));
+    }
+}
+add_action('init', 'pgn_viewer_register_block');
+
+function pgn_viewer_render_block($attributes, $content) {
+    return pgn_viewer_render($attributes, $attributes['pgn'], 'pgnView');
+}
