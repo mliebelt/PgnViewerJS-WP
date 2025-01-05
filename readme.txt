@@ -1,16 +1,18 @@
 === Plugin Name ===
 Contributors: mliebelt
-Donate link: 
+Donate link:
 Tags: chess, pgn
 Requires at least: 4.6
-Tested up to: 5.9
-Stable tag: 1.5.13
+Tested up to: 6.8
+Stable tag: 2.0.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Integration of PgnViewerJS into WordPress.
 
 == Description ==
+
+=== Using Shortcodes ===
 
 Integration of PgnViewerJS into WordPress. This is a small layer around the original [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a WordPress installation. At the end, it should provide the following interfaces:
 
@@ -31,6 +33,12 @@ Just to display a board (only), no moves.
 Allows to print a game in a format similar to magazines and books. For that purpose, the notation  of PGN was expanded by the "D" at the end of a move, that stands for the diagram.
 
 For a list of available parameters, look into the Frequently Asked Questions.
+
+=== Using Block Level Element ===
+
+From the current version on, the user can use instead of a shortcode the block level element "PGN Viewer Block Editor". This provides a form-based interface to all the possible parameters of the pgn-viewer.
+
+!block-editor.png!
 
 == Installation ==
 
@@ -94,6 +102,11 @@ Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP 
 4. Example for use of pgnPrint (shortcode pgnp).
 
 == Changelog ==
+
+= 2.2.0 =
+
+* Updates the pgn-viewer version to 1.6.10.
+* Provides additonal block editor for convenience.
 
 = 1.5.13 =
 

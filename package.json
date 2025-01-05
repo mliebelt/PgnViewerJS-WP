@@ -1,6 +1,6 @@
 {
   "name": "PgnViewerJS-WP",
-  "version": "1.1.6",
+  "version": "2.0.0",
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
@@ -10,10 +10,6 @@
     "@mliebelt/pgn-viewer": "^1.6.10",
     "@wordpress/env": "^10.15.0",
     "@wordpress/scripts": "^30.8.1",
-    "grunt": "^1.6.1",
-    "grunt-contrib-clean": "~2.0.1",
-    "grunt-contrib-compress": "~2.0.0",
-    "grunt-contrib-copy": "^1.0.0",
     "mkdirp": "^3.0.1",
     "rimraf": "^6.0.1",
     "path-parse": ">=1.0.7"
@@ -21,7 +17,6 @@
   "scripts": {
     "start": "wp-env start",
     "stop": "wp-env stop",
-    "build": "grunt default && wp-scripts build"
-
+    "build": "wp-scripts build && mv build/index.js js/index.js"
   }
 }
