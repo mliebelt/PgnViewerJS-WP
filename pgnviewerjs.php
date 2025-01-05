@@ -22,6 +22,9 @@ add_action('plugins_loaded', 'pgn_viewer_load_textdomain');
 // Register and enqueue scripts and styles
 function pgn_viewer_enqueue_assets(): void {
 
+    wp_enqueue_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '1.6.10', true);
+    wp_enqueue_script('pgnviewerjs-init', plugins_url('js/init.js', __FILE__), ['pgnviewerjs'], '1.6.10', true);
+    wp_enqueue_style('pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '1.6.10');
     // Enqueue scripts and styles conditionally
     global $post;
     if ($post && (
@@ -31,8 +34,7 @@ function pgn_viewer_enqueue_assets(): void {
         has_shortcode($post->post_content, 'pgnp') ||
         has_block('pgn-viewer/block-editor', $post->post_content)
     )) {
-        wp_enqueue_script('pgnviewerjs');
-        wp_enqueue_style('pgnviewerjs-styles');
+        wp_enqueue_style('pgnv-styles', plugins_url('css/pgnv_styles.css', __FILE__));
     }
 
     wp_register_script(
@@ -41,7 +43,7 @@ function pgn_viewer_enqueue_assets(): void {
         'pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '1.6.10');
 }
 add_action('wp_enqueue_scripts', 'pgn_viewer_enqueue_assets');
-add_action('enqueue_block_editor_assets', 'pgn_viewer_enqueue_scripts');
+add_action('enqueue_block_editor_assets', 'pgn_viewer_enqueue_assets');
 
 // helper for formatting the  attributes in JSON
 function format_attribute_value($key, $value) {
@@ -132,23 +134,40 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
 
         // Render the PGN Viewer block
         $output = sprintf(
-            '<div id="%s" class="pgn-viewer-block-wrapper"></div>
-            <script type="application/javascript">
-                setTimeout(function () {
-                    if (typeof PGNV !== "undefined") {
-                        console.log("Initializing PGNV");
-                        PGNV.%s("%s", { %s });
+                '<div id="%s" class="pgn-viewer-block-wrapper"></div>
+                <script type="application/javascript">
+                console.log("Shortcode script executed for %s");
+                document.addEventListener("DOMContentLoaded", function() {
+                    console.log("DOMContentLoaded event fired for %s");
+                    if (typeof initPGNV === "function") {
+                        console.log("Calling initPGNV for %s");
+                        initPGNV("%s", "%s", %s);
                     } else {
-                        console.error("PGNV is not loaded properly!");
+                        console.error("initPGNV function not found. Trying direct PGNV call.");
+                        if (typeof PGNV !== "undefined" && typeof PGNV["%s"] === "function") {
+                            console.log("Calling PGNV.%s directly");
+                            PGNV["%s"]("%s", %s);
+                        } else {
+                            console.error("PGNV or PGNV.%s is not available");
+                        }
                     }
-                }, 100);
-            </script>',
-            esc_attr($id),
-            $mode,
-            esc_attr($id),
-            $configString
-        );
-        return $output;
+                });
+                </script>',
+                esc_attr($id),
+                $mode,
+                $mode,
+                $mode,
+                $mode,
+                esc_attr($id),
+                json_encode($config),
+                $mode,
+                $mode,
+                $mode,
+                esc_attr($id),
+                json_encode($config),
+                $mode
+            );
+            return $output;
 }
 
 // Shortcode callbacks
