@@ -50,7 +50,7 @@ You can use instead the following:
     * Board: only FEN and layout elements of the board
     * Print: most not needed.
 
-!block-editor.png!
+![Example Block Editor for PNG](block-editor.png)!
 
 ### Configuration ###
 
