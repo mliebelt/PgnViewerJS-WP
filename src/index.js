@@ -232,7 +232,7 @@ registerBlockType("pgn-viewer/block-editor", {
           </PanelBody>
         </Panel>
 
-        {/* moves width, moves height, header?, notation, notationLayout, timerTime, showResult, timeAnnotation */}
+        {/* moves width, moves height, header?, notation, timerTime, showResult, timeAnnotation */}
         <div className="row group-3">
           <SelectControl
             label={__("Locale", "pgn-viewer")}

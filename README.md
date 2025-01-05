@@ -42,7 +42,7 @@ Allows to print a game in a format similar to magazines and books. For that purp
 
 You can use instead the following:
 
-1. Enter as block element `/PGN Viewer JS`, in the variants ` View`, ` Edit`, ` Board` or ` Print`.
+1. Enter as block element `/PGN Viewer Block Editor`, in the variants ` View`, ` Edit`, ` Board` or ` Print`.
 2. You will then have a form with all options that are possible with the shortcode as well.
 3. Depending on the kind of element you want to have, different values are needed:
     * View: all possible
@@ -50,30 +50,13 @@ You can use instead the following:
     * Board: only FEN and layout elements of the board
     * Print: most not needed.
 
-### Build ###
-
-The build is done with Grunt, so the `package.json` file helps how to install the necessary tools. After installation, do the following steps:
-
-* Go into the root directory (with node.js, npm and Grunt installed).
-* Run `grunt` without any arguments.
-* This will build the distribution currently named `PgnViewerJS-WP.zip`.
-* Go to your WordPress website (as administrator), and upload the plugin.
-* Activate the plugin in WordPress.
-* Build an example page with the following in it: `[pgne]1. e4[/pgne]`
-* Save the page, and open the URL to the page.
-
-If everything works well, you will have now a page with a rendered chessboard in it, which is in edit mode, so you may now add moves that are shown in the section below. Read the documentation of [PgnViewerJS](http://mliebelt.github.io/PgnViewerJS/docu/index.html) what to do with the tool then.
-
-### Planned ###
-
-* Update the implementation to use the new box model. At the moment, users have to include classic boxes to have the chess games visualized.
-* Allow to have a default configuration, so that has not to be repeated all the time on each page.
+!block-editor.png!
 
 ### Configuration ###
 
 This will explain the configuration options that are directly supported. Details will be contained in the father implementation, so only the mapping in WordPress has to be explained. Here is a list of the relevant parameters:
 
-* `fen`: Gives the FEN string of the start position of the game. Default is the inital position.
+* `position`: Gives the FEN string of the start position of the game. Default is the inital position.
 * `orientation`: values are `white` (default) or `black`.
 * `layout`: values are `top` (default, board at the top, moves at the bottom) or `left` (board at the left, moves at the right).
 * `size`: the width of the column including everything, like `750px`.
@@ -95,4 +78,3 @@ A complete example looks like:
 
 * [GitHub](https://github.com/mliebelt/PgnViewerJS): Here is the original JavaScript implementation available.
 * [PgnV Demo](https://mliebelt.github.io/PgnViewerJS/examples.html#1000): Demonstration web site for the features that are currently inluded in PgnViewerJS, and may soon be integrated into the Wordpress plugin in a similar way.
-* [Grunt](https://gruntjs.com/getting-started): Grunt documentation

@@ -8,35 +8,54 @@ Stable tag: 2.0.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Integration of PgnViewerJS into WordPress.
+Integration of @mliebelt/pgn-viewer into WordPress (formarly named PGNViewerJS).
 
 == Description ==
 
 === Using Shortcodes ===
 
-Integration of PgnViewerJS into WordPress. This is a small layer around the original [PgnViewerJS](https://github.com/mliebelt/PgnViewerJS), but is needed to use it in a WordPress installation. At the end, it should provide the following interfaces:
+To use a shortcode, do the following steps:
+
+1. Enter on a new element `/shortcode`.
+2. Enterinside the element then the shortcode including the content of the following sections.
+
+==== Basic View ====
 
      [pgnv]1. e4 e5 2. ...[/pgnv]
 
 This is the PgnViewer (mostly needed): allows to play through a game (including variations), printing the comments, NAGs, ...
 
+==== Edit Mode ====
+
      [pgne]1. e4 ...[/pgne]
 
 Allows to edit and view a game. At the end, you may use the PGN button to display the notation,  that then may be copied again in the WordPress post entry.
 
+==== Single Position (or Board) ====
+
      [pgnb fen=<a FEN string>][/pgnb]
 
-Just to display a board (only), no moves.
+Just to display a board (only), no moves. Leave out the pgn, if possible. If pgn is included, it will be checked and has to be correct (but not shown at the end).
+
+==== Print View ====
 
      [pgnp]1. e4 e5D 2. Nf3 Nc6D ...[/pgnp]
 
-Allows to print a game in a format similar to magazines and books. For that purpose, the notation  of PGN was expanded by the "D" at the end of a move, that stands for the diagram.
+Allows to print a game in a format similar to magazines and books. For that purpose, the notation  of PGN was expanded by the "D" at the end of a move, that stands for the diagram. (Caveat: "D" is currently not working, and leading to an error. See issue [#580](https://github.com/mliebelt/pgn-viewer/issues/580) about that.)
 
 For a list of available parameters, look into the Frequently Asked Questions.
 
 === Using Block Level Element ===
 
-From the current version on, the user can use instead of a shortcode the block level element "PGN Viewer Block Editor". This provides a form-based interface to all the possible parameters of the pgn-viewer.
+You can use instead the following:
+
+1. Enter as block element `/PGN Viewer Block Editor`, in the variants ` View`, ` Edit`, ` Board` or ` Print`.
+2. You will then have a form with all options that are possible with the shortcode as well.
+3. Depending on the kind of element you want to have, different values are needed:
+    * View: all possible
+    * Edit: same as view
+    * Board: only FEN and layout elements of the board
+    * Print: most not needed.
 
 !block-editor.png!
 
@@ -53,7 +72,7 @@ The parameters the viewer understands are:
 
 * id: May be set by the user or generated automatically by the system.
 * locale: the locale to use for displaying the moves, default is 'en'. Available are: cs, da, de, en, es, et, fi, fr, hu, is, it, nb, nl, pl, pt, ro, sv.
-* fen: the position where the game starts, default is the initial position.
+* position: the position where the game starts, default is the initial position.
 * showcoords: default true, if false, hides the ranks and columns on the board.
 * piecestyle: the pieces to use, default is 'merida'. Availabe are: 'wikipedia', 'alpha', 'uscf', 'case', 'condal', 'leipzig', 'chesscom', 'maya', 'merida', and 'beyer'.
 * orientation: 'white' or 'black', default is 'white'.
