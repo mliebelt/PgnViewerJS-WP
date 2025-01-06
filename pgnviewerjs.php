@@ -57,6 +57,9 @@ function format_attribute_value($key, $value) {
             return is_numeric($value) ? (int)$value : 'null';
         } elseif (in_array($key, $float_attributes)) {
             return is_numeric($value) ? (float)$value : 'null';
+        } elseif ($key == 'pgn') {
+            error_log('Current pgn: ' . $value);
+            return $value;
         } else {
             return json_encode($value);
         }
@@ -127,7 +130,7 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
         $configString = '';
         foreach ($config as $key => $value) {
             $formattedValue = format_attribute_value($key, $value);
-            $configString .= sprintf('"%s": %s,', esc_attr($key), $formattedValue);
+            $configString .= sprintf('"%s": %s,', esc_attr($key), json_encode($formattedValue));
         }
         $configString = rtrim($configString, ','); // Remove trailing comma
 
@@ -172,7 +175,18 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
 
 // Shortcode callbacks
 function pgn_viewer_shortcode(array $attributes, string $content = ''): string {
-    return pgn_viewer_render($attributes, $content, 'pgnView');
+    // Remove wpautop filter
+        remove_filter('the_content', 'wpautop');
+        // Remove wptexturize filter
+        remove_filter('the_content', 'wptexturize');
+
+        $cleaned_content = cleanup_pgnv($content);
+
+        // Re-add filters
+        add_filter('the_content', 'wpautop');
+        add_filter('the_content', 'wptexturize');
+
+        return pgn_viewer_render($attributes, $cleaned_content, 'pgnView');
 }
 
 function pgn_board_shortcode(array $attributes, string $content = ''): string {
@@ -180,11 +194,11 @@ function pgn_board_shortcode(array $attributes, string $content = ''): string {
 }
 
 function pgn_edit_shortcode(array $attributes, string $content = ''): string {
-    return pgn_viewer_render($attributes, $content, 'pgnEdit');
+    return pgn_viewer_render($attributes, cleanup_pgnv($content), 'pgnEdit');
 }
 
 function pgn_print_shortcode(array $attributes, string $content = ''): string {
-    return pgn_viewer_render($attributes, $content, 'pgnPrint');
+    return pgn_viewer_render($attributes, cleanup_pgnv($content), 'pgnPrint');
 }
 add_shortcode('pgnv', 'pgn_viewer_shortcode');
 add_shortcode('pgnb', 'pgn_board_shortcode');
@@ -193,16 +207,19 @@ add_shortcode('pgnp', 'pgn_print_shortcode');
 
 // Utility: PGN Cleaning
 function cleanup_pgnv(string $string): string {
+    // First, decode HTML entities
+    $string = html_entity_decode($string, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
     $search = [
-        '…', '...', '&#8230;', '&#8221;', '&#8220;', '&#8222;',
+        '…', '...', '&#8230;', '&#8221;', '&#8220;', '&#8222;', '“', '”',
         "\r\n", "\n", "\r", '<br />', '<br>', '<p>', '</p>', '&nbsp;'
     ];
     $replace = [
-        '...', '...', '...', '"', '"', '"',
+        '...', '...', '...', '"', '"', '"', '"', '"',
         ' ', ' ', ' ', '', '', '', '', ' '
     ];
     $string = str_replace($search, $replace, $string);
-    return esc_html(trim(preg_replace('/\s+/', ' ', $string)));
+    return trim(preg_replace('/\s+/', ' ', $string));
 }
 
 // Generate random string
