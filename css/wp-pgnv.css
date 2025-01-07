@@ -2,11 +2,15 @@
  * Additional CSS that fixes problems by special themes in Worpress. Be as specific as necessary that
  * those styles only change the layout of the board, moves, ...
  */
- .moves .move a {
-     box-shadow: none;
-     color: black;
- }
+.moves .move a {
+  box-shadow: none;
+  color: black;
+}
 
 .moves .move .comment {
-    padding: 0;
+  padding: 0;
+}
+
+.pgnvjs .moves move .timeNormal {
+  display: none;
 }

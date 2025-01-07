@@ -5,7 +5,7 @@ declare(strict_types=1);
 Plugin Name: PgnViewerJS
 Plugin URI: https://github.com/mliebelt/PGNViewerJS-WP
 Description: Integrates the PgnViewerJS into WordPress
-Version: 2.0.0
+Version: 2.0.1
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: Apache License Version 2.0
@@ -21,10 +21,13 @@ add_action('plugins_loaded', 'pgn_viewer_load_textdomain');
 
 // Register and enqueue scripts and styles
 function pgn_viewer_enqueue_assets(): void {
+    // Only enqueue these scripts and styles on the front-end
+    if (!is_admin()) {
+        wp_enqueue_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.0.1', true);
+        wp_enqueue_script('pgnviewerjs-init', plugins_url('js/init.js', __FILE__), ['pgnviewerjs'], '2.0.1', true);
+        wp_enqueue_style('wp-pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.0.1');
+    }
 
-    wp_enqueue_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.2.0', true);
-    wp_enqueue_script('pgnviewerjs-init', plugins_url('js/init.js', __FILE__), ['pgnviewerjs'], '2.2.0', true);
-    wp_enqueue_style('pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.2.0');
     // Enqueue scripts and styles conditionally
     global $post;
     if ($post && (
@@ -37,13 +40,13 @@ function pgn_viewer_enqueue_assets(): void {
         wp_enqueue_style('pgnv-styles', plugins_url('css/pgnv_styles.css', __FILE__));
     }
 
-    wp_register_script(
-        'pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.2.0', true);
-    wp_register_style(
-        'pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.2.0');
+    // Register the script for later use if needed
+    wp_register_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.0.1', true);
 }
+
+// Only add this action for the front-end
 add_action('wp_enqueue_scripts', 'pgn_viewer_enqueue_assets');
-add_action('enqueue_block_editor_assets', 'pgn_viewer_enqueue_assets');
+// add_action('enqueue_block_editor_assets', 'pgn_viewer_enqueue_assets');
 
 // helper for formatting the  attributes in JSON
 function format_attribute_value($key, $value) {
@@ -121,6 +124,7 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
             'resizable' => $resizable,
             'colorMarker' => $colorMarker,
             'figurine' => $figurine,
+            'timeAnnotation' => null,
         ], function($value) { return $value !== null && $value !== ''; });
 
     // Modify the JavaScript initialization based on the mode
@@ -176,17 +180,17 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
 // Shortcode callbacks
 function pgn_viewer_shortcode(array $attributes, string $content = ''): string {
     // Remove wpautop filter
-        remove_filter('the_content', 'wpautop');
-        // Remove wptexturize filter
-        remove_filter('the_content', 'wptexturize');
+    remove_filter('the_content', 'wpautop');
+    // Remove wptexturize filter
+    remove_filter('the_content', 'wptexturize');
 
-        $cleaned_content = cleanup_pgnv($content);
+    $cleaned_content = cleanup_pgnv($content);
 
-        // Re-add filters
-        add_filter('the_content', 'wpautop');
-        add_filter('the_content', 'wptexturize');
+    // Re-add filters
+    add_filter('the_content', 'wpautop');
+    add_filter('the_content', 'wptexturize');
 
-        return pgn_viewer_render($attributes, $cleaned_content, 'pgnView');
+    return pgn_viewer_render($attributes, $cleaned_content, 'pgnView');
 }
 
 function pgn_board_shortcode(array $attributes, string $content = ''): string {
@@ -230,19 +234,15 @@ function generate_random_string(int $length = 10): string {
 // Enqueue scripts and styles for the block editor and frontend
 function pgnv_block_assets() {
     // Frontend and editor styles
-    wp_enqueue_style(
-        'pgnviewerjs-styles',
-        plugins_url('css/pgnv_styles.css', __FILE__),
-        [],
-        '2.2.0'
-    );
+    wp_enqueue_style( 'pgnviewerjs-styles', plugins_url('css/pgnv_styles.css', __FILE__), [], '2.0.1' );
+    wp_enqueue_style( 'wp-pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.0.1' );
 
     // Block editor script
     wp_enqueue_script(
         'pgnviewerjs-editor',
         plugins_url('js/index.js', __FILE__),
         ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components'],
-        '2.2.0',
+        '2.0.1',
         true
     );
 }
