@@ -23,9 +23,9 @@ add_action('plugins_loaded', 'pgn_viewer_load_textdomain');
 function pgn_viewer_enqueue_assets(): void {
     // Only enqueue these scripts and styles on the front-end
     if (!is_admin()) {
-        wp_enqueue_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.0.1', true);
-        wp_enqueue_script('pgnviewerjs-init', plugins_url('js/init.js', __FILE__), ['pgnviewerjs'], '2.0.1', true);
-        wp_enqueue_style('wp-pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.0.1');
+        wp_enqueue_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.0.2', true);
+        wp_enqueue_script('pgnviewerjs-init', plugins_url('js/init.js', __FILE__), ['pgnviewerjs'], '2.0.2', true);
+        wp_enqueue_style('wp-pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.0.2');
     }
 
     // Enqueue scripts and styles conditionally
@@ -41,7 +41,7 @@ function pgn_viewer_enqueue_assets(): void {
     }
 
     // Register the script for later use if needed
-    wp_register_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.0.1', true);
+    wp_register_script('pgnviewerjs', plugins_url('js/dist.js', __FILE__), [], '2.0.2', true);
 }
 
 // Only add this action for the front-end
@@ -251,15 +251,15 @@ function generate_random_string(int $length = 10): string {
 // Enqueue scripts and styles for the block editor and frontend
 function pgnv_block_assets() {
     // Frontend and editor styles
-    wp_enqueue_style( 'pgnviewerjs-styles', plugins_url('css/pgnv_styles.css', __FILE__), [], '2.0.1' );
-    wp_enqueue_style( 'wp-pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.0.1' );
+    wp_enqueue_style( 'pgnviewerjs-styles', plugins_url('css/pgnv_styles.css', __FILE__), [], '2.0.2' );
+    wp_enqueue_style( 'wp-pgnviewerjs-styles', plugins_url('css/wp-pgnv.css', __FILE__), [], '2.0.2' );
 
     // Block editor script
     wp_enqueue_script(
         'pgnviewerjs-editor',
         plugins_url('js/index.js', __FILE__),
         ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components'],
-        '2.0.1',
+        '2.0.2',
         true
     );
 }
