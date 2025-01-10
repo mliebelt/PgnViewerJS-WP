@@ -8,7 +8,7 @@ Description: Integrates the PgnViewerJS into WordPress
 Version: 2.0.1
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
-License: Apache License Version 2.0
+License: GPL-3.0-or-later
 Text Domain: pgn-viewer
 Domain Path: /languages
 */
@@ -177,21 +177,38 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
             return $output;
 }
 
-// Shortcode callbacks
-function pgn_viewer_shortcode(array $attributes, string $content = ''): string {
-    // Remove wpautop filter
-    remove_filter('the_content', 'wpautop');
-    // Remove wptexturize filter
-    remove_filter('the_content', 'wptexturize');
+// // Shortcode callbacks
+// function pgn_viewer_shortcode(array $attributes, string $content = ''): string {
+//     // Remove wpautop filter
+//     remove_filter('the_content', 'wpautop');
+//     // Remove wptexturize filter
+//     remove_filter('the_content', 'wptexturize');
 
-    $cleaned_content = cleanup_pgnv($content);
+//     $cleaned_content = cleanup_pgnv($content);
 
-    // Re-add filters
-    add_filter('the_content', 'wpautop');
-    add_filter('the_content', 'wptexturize');
+//     // Re-add filters
+//     add_filter('the_content', 'wpautop');
+//     add_filter('the_content', 'wptexturize');
 
-    return pgn_viewer_render($attributes, $cleaned_content, 'pgnView');
+//     return pgn_viewer_render($attributes, $cleaned_content, 'pgnView');
+// }
+
+function custom_pgnv_shortcode($attributes, $content = null) {
+    // Extract the raw shortcode content
+    global $post;
+    if ($post && has_shortcode($post->post_content, 'pgnv')) {
+        $pattern = get_shortcode_regex(['pgnv']);
+        if (preg_match_all('/' . $pattern . '/s', $post->post_content, $matches)
+            && array_key_exists(5, $matches)) {
+            // $matches[5] contains the raw content inside the shortcode
+            $content = $matches[5][0];
+        }
+    }
+
+    // Now process $content which should contain the unmodified PGN data
+    return pgn_viewer_render($attributes, $content, 'pgnView');
 }
+add_shortcode('pgnv', 'custom_pgnv_shortcode');
 
 function pgn_board_shortcode(array $attributes, string $content = ''): string {
     return pgn_viewer_render($attributes, $content, 'pgnBoard');
@@ -204,7 +221,7 @@ function pgn_edit_shortcode(array $attributes, string $content = ''): string {
 function pgn_print_shortcode(array $attributes, string $content = ''): string {
     return pgn_viewer_render($attributes, cleanup_pgnv($content), 'pgnPrint');
 }
-add_shortcode('pgnv', 'pgn_viewer_shortcode');
+// add_shortcode('pgnv', 'pgn_viewer_shortcode');
 add_shortcode('pgnb', 'pgn_board_shortcode');
 add_shortcode('pgne', 'pgn_edit_shortcode');
 add_shortcode('pgnp', 'pgn_print_shortcode');
@@ -215,11 +232,11 @@ function cleanup_pgnv(string $string): string {
     $string = html_entity_decode($string, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
     $search = [
-        '…', '...', '&#8230;', '&#8221;', '&#8220;', '&#8222;', '“', '”',
+        '…', '...', '&#8230;', '&#8201;', '&#8221;', '&#8220;', '&#8222;', '“', '”',
         "\r\n", "\n", "\r", '<br />', '<br>', '<p>', '</p>', '&nbsp;'
     ];
     $replace = [
-        '...', '...', '...', '"', '"', '"', '"', '"',
+        '...', '...', '...', '"', '"', '"', '"', '"', '"',
         ' ', ' ', ' ', '', '', '', '', ' '
     ];
     $string = str_replace($search, $replace, $string);

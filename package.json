@@ -10,13 +10,15 @@
     "@mliebelt/pgn-viewer": "^1.6.10",
     "@wordpress/env": "^10.15.0",
     "@wordpress/scripts": "^30.8.1",
+    "archiver": "^7.0.1",
     "mkdirp": "^3.0.1",
-    "rimraf": "^6.0.1",
-    "path-parse": ">=1.0.7"
+    "path-parse": ">=1.0.7",
+    "rimraf": "^6.0.1"
   },
   "scripts": {
     "start": "wp-env start",
     "stop": "wp-env stop",
-    "build": "wp-scripts build && mv build/index.js js/index.js"
+    "build": "wp-scripts build && mv build/index.js js/index.js",
+    "release": "node scripts/create-release.js"
   }
 }

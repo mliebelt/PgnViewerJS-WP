@@ -122,7 +122,12 @@ Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP 
 
 == Changelog ==
 
-= 2.2.0 =
+= 2.0.1 =
+
+* Ensures that escaped code is handled correctly.
+* Ignores time information in PGN (which renders else ugly)
+
+= 2.0.0 =
 
 * Updates the pgn-viewer version to 1.6.10.
 * Provides additonal block editor for convenience.
