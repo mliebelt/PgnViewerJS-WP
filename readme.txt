@@ -122,6 +122,11 @@ Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP 
 
 == Changelog ==
 
+= 2.0.3 =
+
+* Fix problem with global PGN, ensure that PGN is not filtered.
+* Allow fen as alias for position, and size for width (previous versions had those attributes).
+
 = 2.0.2 =
 
 * Parse shortcode for `pgnv` alone, don't convert to anything.

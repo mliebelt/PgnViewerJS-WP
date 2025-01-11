@@ -5,7 +5,7 @@ declare(strict_types=1);
 Plugin Name: PgnViewerJS
 Plugin URI: https://github.com/mliebelt/PGNViewerJS-WP
 Description: Integrates the PgnViewerJS into WordPress
-Version: 2.0.2
+Version: 2.0.3
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: GPL-3.0-or-later
@@ -71,14 +71,14 @@ function format_attribute_value($key, $value) {
 function pgn_viewer_render(array $attributes, string $content = '', string $mode = 'pgnView'): string {
     ob_start();
     // Extract block attributes
-    $position = $attributes['position'] ?? '';
+    $position = $attributes['position'] ?? $attributes['fen'] ?? ''; // Allow 'fen' as alias for 'position'
     $pgn = $content ?: ''; // Use empty string if content is null or empty
     $layout = $attributes['layout'] ?? 'left';
     $orientation = $attributes['orientation'] ?? 'white';
     $piecestyle = $attributes['piecestyle'] ?? 'merida';
     $theme = $attributes['theme'] ?? 'zeit';
     $boardsize = $attributes['boardsize'] ?? '400px';
-    $width = $attributes['width'] ?? '500px';
+    $width = $attributes['width'] ?? $attributes['size'] ?? '500px'; // Allow 'size' as alias for 'width'
     $movesheight = $attributes['movesheight'] ?? null;
     $moveswidth = $attributes['moveswidth'] ?? null;
     $timertime = $attributes['timertime'] ?? null;
@@ -100,82 +100,72 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
     $id = $attributes['id'] ?? generate_random_string();
 
     // Build config options passed to the viewer
-        $config = array_filter([
-            'position' => $position,
-            'pgn' => $pgn,
-            'orientation' => $orientation,
-            'pieceStyle' => $piecestyle,
-            'theme' => $theme,
-            'boardSize' => $boardsize,
-            'width' => $width,
-            'movesHeight' => $movesheight,
-            'movesWidth' => $moveswidth,
-            'notationLayout' => $notationLayout,
-            'timerTime' => $timertime,
-            'notation' => $notation,
-            'headers' => $headers,
-            'showCoords' => $showCoords,
-            'coordsInner' => $coordsInner,
-            'coordsFactor' => $coordsFactor,
-            'coordsFontSize' => $coordsFontSize,
-            'layout' => $layout,
-            'figurine' => $figurine,
-            'locale' => $locale,
-            'resizable' => $resizable,
-            'colorMarker' => $colorMarker,
-            'figurine' => $figurine,
-            'timeAnnotation' => null,
-        ], function($value) { return $value !== null && $value !== ''; });
+    $config = array_filter([
+        'position' => $position,
+        'pgn' => $pgn,
+        'orientation' => $orientation,
+        'pieceStyle' => $piecestyle,
+        'theme' => $theme,
+        'boardSize' => $boardsize,
+        'width' => $width,
+        'movesHeight' => $movesheight,
+        'movesWidth' => $moveswidth,
+        'notationLayout' => $notationLayout,
+        'timerTime' => $timertime,
+        'notation' => $notation,
+        'headers' => $headers,
+        'showCoords' => $showCoords,
+        'coordsInner' => $coordsInner,
+        'coordsFactor' => $coordsFactor,
+        'coordsFontSize' => $coordsFontSize,
+        'layout' => $layout,
+        'figurine' => $figurine,
+        'locale' => $locale,
+        'resizable' => $resizable,
+        'colorMarker' => $colorMarker,
+        'figurine' => $figurine,
+        'timeAnnotation' => null,
+    ], function($value) { return $value !== null && $value !== ''; });
 
     // Modify the JavaScript initialization based on the mode
-        $jsFunction = $mode;
+    $jsFunction = $mode;
 
-        // Generate the config string with proper type handling
-        $configString = '';
-        foreach ($config as $key => $value) {
-            $formattedValue = format_attribute_value($key, $value);
-            $configString .= sprintf('"%s": %s,', esc_attr($key), json_encode($formattedValue));
-        }
-        $configString = rtrim($configString, ','); // Remove trailing comma
+    // Generate the config string with proper type handling
+    $configString = '';
+    foreach ($config as $key => $value) {
+        $formattedValue = format_attribute_value($key, $value);
+        $configString .= sprintf('"%s": %s,', esc_attr($key), json_encode($formattedValue));
+    }
+    $configString = rtrim($configString, ','); // Remove trailing comma
 
+
+    // Render the PGN Viewer block
+    // Escape the PGN content for JavaScript
+        $escaped_pgn = str_replace(array("\\", '"', "\n", "\r", "\t"), array("\\\\", '\"', "\\n", "\\r", "\\t"), $content);
 
         // Render the PGN Viewer block
         $output = sprintf(
-                '<div id="%s" class="pgn-viewer-block-wrapper"></div>
-                <script type="application/javascript">
-                console.log("Shortcode script executed for %s");
-                document.addEventListener("DOMContentLoaded", function() {
-                    console.log("DOMContentLoaded event fired for %s");
-                    if (typeof initPGNV === "function") {
-                        console.log("Calling initPGNV for %s");
-                        initPGNV("%s", "%s", %s);
-                    } else {
-                        console.error("initPGNV function not found. Trying direct PGNV call.");
-                        if (typeof PGNV !== "undefined" && typeof PGNV["%s"] === "function") {
-                            console.log("Calling PGNV.%s directly");
-                            PGNV["%s"]("%s", %s);
-                        } else {
-                            console.error("PGNV or PGNV.%s is not available");
-                        }
-                    }
-                });
-                </script>',
-                esc_attr($id),
-                $mode,
-                $mode,
-                $mode,
-                $mode,
-                esc_attr($id),
-                json_encode($config),
-                $mode,
-                $mode,
-                $mode,
-                esc_attr($id),
-                json_encode($config),
-                $mode
-            );
-            return $output;
-}
+            '<div id="%s" class="pgn-viewer-block-wrapper"></div>
+            <script type="application/javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+                if (typeof initPGNV === "function") {
+                    initPGNV("%s", "%s", {
+                        ...%s,
+                        pgn: "%s"
+                    });
+                } else {
+                    console.error("initPGNV function not found");
+                }
+            });
+            </script>',
+            esc_attr($id),
+            $mode,
+            esc_attr($id),
+            json_encode($config),
+            $escaped_pgn // Use the escaped PGN string
+        );
+        return $output;
+    }
 
 // // Shortcode callbacks
 // function pgn_viewer_shortcode(array $attributes, string $content = ''): string {
@@ -193,20 +183,24 @@ function pgn_viewer_render(array $attributes, string $content = '', string $mode
 //     return pgn_viewer_render($attributes, $cleaned_content, 'pgnView');
 // }
 
-function custom_pgnv_shortcode($attributes, $content = null) {
-    // Extract the raw shortcode content
-    global $post;
-    if ($post && has_shortcode($post->post_content, 'pgnv')) {
-        $pattern = get_shortcode_regex(['pgnv']);
-        if (preg_match_all('/' . $pattern . '/s', $post->post_content, $matches)
-            && array_key_exists(5, $matches)) {
-            // $matches[5] contains the raw content inside the shortcode
-            $content = $matches[5][0];
-        }
-    }
+function custom_pgnv_shortcode($atts, $content = null) {
+    // Decode HTML entities
+    $content = html_entity_decode($content, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
-    // Now process $content which should contain the unmodified PGN data
-    return pgn_viewer_render($attributes, $content, 'pgnView');
+    // Convert smart quotes to straight quotes and handle ellipsis
+    $content = preg_replace(
+        array('/\x{201C}|\x{201D}/u', '/\x{2018}|\x{2019}/u', '/\x{2026}/u'),
+        array('"', "'", '...'),
+        $content
+    );
+
+    // Clean up common issues
+    $content = str_replace(array('<br />', '<br>', '<p>', '</p>'), ' ', $content);
+    $content = preg_replace('/\s+/', ' ', $content);
+    $content = trim($content);
+
+    // Now render the PGN viewer
+    return pgn_viewer_render($atts, $content, 'pgnView');
 }
 add_shortcode('pgnv', 'custom_pgnv_shortcode');
 
