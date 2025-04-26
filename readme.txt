@@ -4,7 +4,7 @@ Donate link:
 Tags: chess, pgn
 Requires at least: 4.6
 Tested up to: 6.8
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -56,8 +56,6 @@ You can use instead the following:
     * Edit: same as view
     * Board: only FEN and layout elements of the board
     * Print: most not needed.
-
-!block-editor.png!
 
 == Installation ==
 
@@ -119,8 +117,13 @@ Have a look at the GitHub repository https://github.com/mliebelt/PgnViewerJS-WP 
 2. Example for use of pgnEdit (shortcode pgne).
 3. Example for use of pgnBoard (shortcode pgnb).
 4. Example for use of pgnPrint (shortcode pgnp).
+5. Example of using the block level element to allow all modes.
 
 == Changelog ==
+
+= 2.0.5 =
+
+* Upgrade to pgn-viewer version 1.6.11 (with some bug fixes in the viewer).
 
 = 2.0.4 =
 

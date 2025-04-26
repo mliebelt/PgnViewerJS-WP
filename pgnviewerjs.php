@@ -5,7 +5,7 @@ declare(strict_types=1);
 Plugin Name: PgnViewerJS
 Plugin URI: https://github.com/mliebelt/PGNViewerJS-WP
 Description: Integrates the PgnViewerJS into WordPress
-Version: 2.0.4
+Version: 2.0.5
 Author: Markus Liebelt
 Author URI: https://github.com/mliebelt
 License: GPL-3.0-or-later
