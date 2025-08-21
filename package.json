@@ -9,7 +9,7 @@
   "devDependencies": {
     "@mliebelt/pgn-viewer": "^1.6.11",
     "@wordpress/env": "^10.28.0",
-    "@wordpress/scripts": "^30.21.0",
+    "@wordpress/scripts": "^30.22.0",
     "archiver": "^7.0.1",
     "mkdirp": "^3.0.1",
     "path-parse": ">=1.0.7",
