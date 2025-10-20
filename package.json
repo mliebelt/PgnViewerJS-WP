@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@mliebelt/pgn-viewer": "^1.6.11",
-    "@wordpress/env": "^10.32.0",
+    "@wordpress/env": "^10.33.0",
     "@wordpress/scripts": "^30.26.0",
     "archiver": "^7.0.1",
     "mkdirp": "^3.0.1",
